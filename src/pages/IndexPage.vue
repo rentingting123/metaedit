@@ -1,19 +1,25 @@
+<!--
+ * @Author: rentingting 1542078062@qq.com
+ * @Date: 2023-12-14 21:27:01
+ * @LastEditors: rentingting 1542078062@qq.com
+ * @LastEditTime: 2023-12-14 21:41:46
+ * @FilePath: /code/metaedit/src/pages/IndexPage.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <q-page class="flex flex-center">
-   <PixelStreaming/>
+    <PixelStreaming />
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import PixelStreaming from 'components/PixelStreaming.vue'
+import { defineComponent } from "vue";
+import PixelStreaming from "components/PixelStreaming.vue";
 
 export default defineComponent({
-  name: 'IndexPage',
+  name: "IndexPage",
   components: {
-    PixelStreaming
+    PixelStreaming,
   },
-})
-
-
+});
 </script>
