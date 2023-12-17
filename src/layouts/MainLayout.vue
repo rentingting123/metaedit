@@ -1,85 +1,68 @@
 <template>
   <q-layout view="hHh lpR lFr">
     <!--  text-white -->
-    <q-header elevated class="bg-primary" height-hint="98">
-      <q-bar class="q-electron-drag color-bg1">
+    <q-header elevated class="bg-primary" height-hint="128">
+      <q-bar class="color-bg1">
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-        <div class="q-pa-md">
-          <q-btn-dropdown label="菜单">
-            <q-list>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>新建</q-item-label>
-                </q-item-section>
+        <div class="cursor-pointer non-selectable">
+          菜单
+          <q-menu dark transition-show="flip-right" transition-hide="flip-left">
+            <q-list dense style="min-width: 100px">
+              <q-item clickable v-close-popup>
+                <q-item-section>新建</q-item-section>
               </q-item>
-
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>打开</q-item-label>
-                </q-item-section>
+              <q-item clickable v-close-popup>
+                <q-item-section>打开</q-item-section>
               </q-item>
-
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>保存</q-item-label>
-                </q-item-section>
+              <q-separator />
+              <q-item clickable v-close-popup>
+                <q-item-section>保存</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>设置</q-item-label>
-                </q-item-section>
+              <q-item clickable v-close-popup>
+                <q-item-section>设置</q-item-section>
               </q-item>
             </q-list>
-          </q-btn-dropdown>
+          </q-menu>
         </div>
-        <div class="q-pa-md">
-          <q-btn-dropdown label="添加">
-            <q-list>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>场景</q-item-label>
-                </q-item-section>
-              </q-item>
 
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>图片</q-item-label>
-                </q-item-section>
+        <div class="q-ml-md cursor-pointer non-selectable">
+          添加
+          <q-menu
+            auto-close
+            dark
+            transition-show="flip-right"
+            transition-hide="flip-left"
+          >
+            <q-list dense style="min-width: 100px">
+              <q-item clickable>
+                <q-item-section>场景</q-item-section>
               </q-item>
-
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>序列帧</q-item-label>
-                </q-item-section>
+              <q-item clickable>
+                <q-item-section>图片</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>视频</q-item-label>
-                </q-item-section>
+              <q-item clickable>
+                <q-item-section>序列帧</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>按钮</q-item-label>
-                </q-item-section>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>按钮</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>对话</q-item-label>
-                </q-item-section>
+              <q-item clickable>
+                <q-item-section>按钮组</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup @click="onItemClick">
-                <q-item-section>
-                  <q-item-label>按钮组</q-item-label>
-                </q-item-section>
+              <q-separator />
+              <q-item clickable>
+                <q-item-section>对话</q-item-section>
               </q-item>
             </q-list>
-          </q-btn-dropdown>
+          </q-menu>
         </div>
+
         <q-space />
-        <q-btn flat color="primary" label="运行" />
-        <q-btn flat color="primary" label="编译" />
-        <q-btn flat color="primary" label="横屏" />
-        <q-btn flat color="primary" label="显示比例" />
+        <q-btn flat color="primary" label="运行" @click="handleRun" />
+        <q-btn flat color="primary" label="编译" @click="handleCompile" />
+        <q-btn flat color="primary" label="横屏" @click="handleLandscape" />
+        <q-btn flat color="primary" label="显示比例" @click="handleScale" />
         <q-space />
         <q-btn dense flat icon="minimize" @click="handleMainEvent('min')" />
         <q-btn dense flat icon="crop_square" @click="handleMainEvent('max')" />
@@ -103,7 +86,17 @@
           <div class="side-item color-tx1">场景2</div>
         </div>
 
-        <div class="side-item color-tx1" @click="psStore.start">图层</div>
+        <div class="side-item color-tx1 color-bg2" @click="psStore.start">
+          图层
+        </div>
+        <div class="q-py-lg">
+          <div class="side-item color-tx1">视频</div>
+          <div class="side-item color-tx1">序列帧</div>
+          <div class="side-item color-tx1">图片</div>
+          <div class="side-item color-tx1">对话</div>
+          <div class="side-item color-tx1">按钮</div>
+          <div class="side-item color-tx1">按钮组</div>
+        </div>
       </q-scroll-area>
     </q-drawer>
     <q-drawer
@@ -139,9 +132,24 @@ const rightDrawerOpen = ref(true);
 const toggleLeftDrawer = (eventName) => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+//运行
+const handleRun = () => {
+  console.log("run");
+};
+//编译
+const handleCompile = () => {
+  console.log("compile");
+};
+//  横屏
+const handleLandscape = () => {
+  console.log("landscape");
+};
+//handleScale
+const handleScale = () => {
+  console.log("scale");
+};
 </script>
 <style scoped>
-
 .side-item {
   text-align: center;
   width: 100%;
