@@ -72,32 +72,117 @@
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      :width="120"
+      :width="200"
       :breakpoint="500"
       class="color-bg2"
       side="left"
     >
-      <q-scroll-area class="fit mini-slot cursor-pointer">
-        <div class="q-py-lg">
-          <div class="side-item color-tx1">场景</div>
-          <div class="side-item color-tx1">开场</div>
-          <div class="side-item color-tx1">主场景1</div>
-          <div class="side-item color-tx1">场景1</div>
-          <div class="side-item color-tx1">场景2</div>
-        </div>
+      <q-splitter v-model="splitterModel" horizontal dark style="height: 100%">
+        <template v-slot:before>
+          <div class="content">
+            <div class="scene color-bg2" v-if="!showSearchScene">
+              <div class="color-tx1">场景</div>
+              <div>
+                <q-btn
+                  flat
+                  color="primary"
+                  label="添加"
+                  @click="addScene"
+                  dense
+                />
+                <q-btn
+                  flat
+                  dense
+                  color="primary"
+                  label="搜索"
+                  @click="searchScene"
+                />
+              </div>
+            </div>
+            <div class="scene color-bg2" v-else>
+              <q-icon
+                style="color: #ccc; font-size: 1.4em"
+                name="bi-arrow-left-short"
+                @click="searchScene"
+              />
+              <div>
+                <q-input
+                  dark
+                  rounded
+                  clearable
+                  v-model="sceneText"
+                  placeholder="关键字搜索"
+                  standout
+                  dense
+                  hide-bottom-space
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </div>
+            </div>
+            <div class="side-list">
+              <div
+                class="side-item color-tx1"
+                v-for="(item, index) in sceneList"
+                :key="index"
+              >
+                {{ item.name }}
+              </div>
+            </div>
+          </div>
+        </template>
 
-        <div class="side-item color-tx1 color-bg2" @click="psStore.start">
-          图层
-        </div>
-        <div class="q-py-lg">
-          <div class="side-item color-tx1">视频</div>
-          <div class="side-item color-tx1">序列帧</div>
-          <div class="side-item color-tx1">图片</div>
-          <div class="side-item color-tx1">对话</div>
-          <div class="side-item color-tx1">按钮</div>
-          <div class="side-item color-tx1">按钮组</div>
-        </div>
-      </q-scroll-area>
+        <template v-slot:after>
+          <div class="content">
+            <div class="scene color-bg2"  v-if="!showSearchLevel">
+              <div class="color-tx1">图层</div>
+              <div>
+                <q-btn
+                  flat
+                  dense
+                  color="primary"
+                  label="搜索"
+                  @click="searchLevel"
+                />
+              </div>
+            </div>
+            <div class="scene color-bg2" v-else>
+              <q-icon
+                style="color: #ccc; font-size: 1.4em"
+                name="bi-arrow-left-short"
+                @click="searchLevel"
+              />
+              <div>
+                <q-input
+                  dark
+                  rounded
+                  clearable
+                  v-model="sceneText"
+                  placeholder="关键字搜索"
+                  standout
+                  dense
+                  hide-bottom-space
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </div>
+            </div>
+            <div class="side-list">
+              <div
+                class="side-item color-tx1"
+                v-for="(item, index) in levelList"
+                :key="index"
+              >
+                {{ item.name }}
+              </div>
+            </div>
+          </div>
+        </template>
+      </q-splitter>
     </q-drawer>
     <q-drawer
       v-model="rightDrawerOpen"
@@ -124,9 +209,71 @@ import { ref } from "vue";
 const handleMainEvent = (eventName) => {
   // ipcRenderer.send(eventName);
 };
-const onItemClick = (eventName) => {
-  // ipcRenderer.send(eventName);
-};
+const splitterModel = ref(50); // start at 50%
+// 场景
+const sceneText = ref("");
+const showSearchScene = ref(false); //场景
+const showSearchLevel = ref(false);//图层
+const sceneList = ref([
+  {
+    id: 1,
+    name: "场景1",
+  },
+  {
+    id: 2,
+    name: "场景2",
+  },
+  {
+    id: 3,
+    name: "场景3",
+  },
+]);
+// 视频
+// 序列帧
+// 图片
+// 对话
+// 按钮
+// 按钮组
+const levelType = ref([
+  {
+    id: 1,
+    name: "视频",
+  },
+  {
+    id: 2,
+    name: "序列帧",
+  },
+  {
+    id: 3,
+    name: "图片",
+  },
+  {
+    id: 4,
+    name: "对话",
+  },
+  {
+    id: 5,
+    name: "按钮",
+  },
+  {
+    id: 5,
+    name: "按钮组",
+  },
+]);
+const levelList = ref([
+  {
+    id: 1,
+    name: "视频",
+  },
+  {
+    id: 2,
+    name: "图片",
+  },
+  {
+    id: 3,
+    name: "按钮",
+  },
+]);
 const leftDrawerOpen = ref(false);
 const rightDrawerOpen = ref(true);
 const toggleLeftDrawer = (eventName) => {
@@ -148,11 +295,45 @@ const handleLandscape = () => {
 const handleScale = () => {
   console.log("scale");
 };
+//添加场景
+const addScene = () => {
+  console.log("addScene");
+  //给sceneList 追加
+  sceneList.value.push({
+    id: sceneList.value.length + 1,
+    name: "场景" + (sceneList.value.length + 1),
+  });
+};
+//搜索场景
+const searchScene = () => {
+  showSearchScene.value = !showSearchScene.value;
+};
+//搜索图层
+const searchLevel = () => {
+  showSearchLevel.value =!showSearchLevel.value;
+};
 </script>
 <style scoped>
+.side-list {
+  padding-top: 60px;
+}
 .side-item {
-  text-align: center;
+  text-align: left;
   width: 100%;
-  margin-top: 12px;
+  padding: 6px 10px;
+}
+.scene {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #000;
+  /* 固定在顶部栏 */
+  position: fixed;
+  width: 100%;
+}
+.search-ipt {
+  height: 20px;
+  margin-left: 20px;
 }
 </style>
