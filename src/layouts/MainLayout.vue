@@ -136,7 +136,7 @@
 
         <template v-slot:after>
           <div class="content">
-            <div class="scene color-bg2"  v-if="!showSearchLevel">
+            <div class="scene color-bg2" v-if="!showSearchLevel">
               <div class="color-tx1">图层</div>
               <div>
                 <q-btn
@@ -202,18 +202,18 @@
 <script setup >
 // import { useQuasar } from "quasar";
 import { ref } from "vue";
-// const { ipcRenderer } = require("electron");
+const { ipcRenderer } = require("electron");
 // const $q = useQuasar();
 // $q.dark
 //右上角按钮方法
 const handleMainEvent = (eventName) => {
-  // ipcRenderer.send(eventName);
+  ipcRenderer.send(eventName);
 };
 const splitterModel = ref(50); // start at 50%
 // 场景
 const sceneText = ref("");
 const showSearchScene = ref(false); //场景
-const showSearchLevel = ref(false);//图层
+const showSearchLevel = ref(false); //图层
 const sceneList = ref([
   {
     id: 1,
@@ -310,7 +310,7 @@ const searchScene = () => {
 };
 //搜索图层
 const searchLevel = () => {
-  showSearchLevel.value =!showSearchLevel.value;
+  showSearchLevel.value = !showSearchLevel.value;
 };
 </script>
 <style scoped>

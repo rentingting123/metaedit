@@ -27,12 +27,12 @@
  *   }
  * }
  */
-import { contextBridge, ipcRenderer } from 'electron'
-import { PSServe } from './psServe'
+// import { contextBridge, ipcRenderer } from 'electron'
+// import { PSServe } from './psServe'
 
 
 
 
-contextBridge.exposeInMainWorld('psAPI', {
-  openFile: () => ipcRenderer.invoke('dialog:openFile')
-})
+// contextBridge.exposeInMainWorld('psAPI', {
+//   openFile: () => ipcRenderer.invoke('dialog:openFile')
+// })
