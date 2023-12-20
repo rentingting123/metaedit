@@ -187,11 +187,12 @@
     <q-drawer
       v-model="rightDrawerOpen"
       show-if-above
-      :width="120"
+      :width="320"
       :breakpoint="500"
       class="color-bg2"
       side="right"
     >
+      <RightForm></RightForm>
     </q-drawer>
     <q-page-container>
       <router-view />
@@ -200,10 +201,12 @@
 </template>
 
 <script setup >
-// import { useQuasar } from "quasar";
 import { ref } from "vue";
 const { ipcRenderer } = require("electron");
-// const $q = useQuasar();
+import RightForm from "./RightForm.vue";
+
+//组件注册
+
 // $q.dark
 //右上角按钮方法
 const handleMainEvent = (eventName) => {
