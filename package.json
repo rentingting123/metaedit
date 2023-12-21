@@ -13,8 +13,9 @@
   "dependencies": {
     "@electron/remote": "^2.0.10",
     "@quasar/extras": "^1.16.4",
-    "electron": "^27.1.2",
     "axios": "^1.2.1",
+    "electron": "^27.1.2",
+    "element-plus": "^2.4.4",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
