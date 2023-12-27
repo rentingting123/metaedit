@@ -35,24 +35,63 @@
           >
             <q-list dense style="min-width: 100px">
               <q-item clickable>
-                <q-item-section>场景</q-item-section>
-              </q-item>
-              <q-item clickable>
-                <q-item-section>图片</q-item-section>
-              </q-item>
-              <q-item clickable>
-                <q-item-section>序列帧</q-item-section>
+                <q-item-section @click="addScene">
+                  <div>
+                    <q-icon name="bi-layout-wtf" class="iconstyle" />场景
+                  </div>
+                </q-item-section>
               </q-item>
               <q-separator />
-              <q-item clickable>
-                <q-item-section>按钮</q-item-section>
+              <q-item clickable @click="handleAddSceneType(1, sceneIndex)">
+                <q-item-section>
+                  <div>
+                    <q-icon name="bi-camera-video" class="iconstyle" />视频
+                  </div>
+                </q-item-section>
               </q-item>
-              <q-item clickable>
-                <q-item-section>按钮组</q-item-section>
+              <q-item clickable @click="handleAddSceneType(2, sceneIndex)">
+                <q-item-section>
+                  <div>
+                    <q-icon name="bi-cursor-text" class="iconstyle" />序列帧
+                  </div></q-item-section
+                >
               </q-item>
               <q-separator />
-              <q-item clickable>
-                <q-item-section>对话</q-item-section>
+              <q-item clickable @click="handleAddSceneType(3, sceneIndex)">
+                <q-item-section>
+                  <div>
+                    <q-icon name="bi-card-image" class="iconstyle" />图片
+                  </div>
+                </q-item-section>
+              </q-item>
+              <q-item clickable @click="handleAddSceneType(4, sceneIndex)">
+                <q-item-section
+                  ><div>
+                    <q-icon name="bi-chat-dots" class="iconstyle" />对话
+                  </div></q-item-section
+                >
+              </q-item>
+              <q-item clickable @click="handleAddSceneType(5, sceneIndex)">
+                <q-item-section
+                  ><div>
+                    <q-icon name="bi-stop-fill" class="iconstyle" />按钮
+                  </div></q-item-section
+                >
+              </q-item>
+              <q-item clickable @click="handleAddSceneType(6, sceneIndex)">
+                <q-item-section
+                  ><div>
+                    <q-icon name="bi-stop-btn" class="iconstyle" />按钮组
+                  </div></q-item-section
+                >
+              </q-item>
+              <q-separator />
+              <q-item clickable @click="handleAddSceneType(7, sceneIndex)">
+                <q-item-section
+                  ><div>
+                    <q-icon name="bi-suit-diamond" class="iconstyle" />几何
+                  </div></q-item-section
+                >
               </q-item>
             </q-list>
           </q-menu>
@@ -429,6 +468,69 @@ const sceneList = ref([
         isShow: true,
       },
     ], //图层
+  },
+  {
+    id: 2,
+    name: "场景2",
+    levelList: [
+      {
+        id: new Date().getTime(), //获取当前时间戳
+        type: 1,
+        name: "视频",
+        isShow: true,
+      },
+      {
+        id: new Date().getTime(), //获取当前时间戳
+        type: 2,
+        name: "序列帧",
+        isShow: true,
+      },
+      {
+        id: new Date().getTime(), //获取当前时间戳
+        type: 3,
+        name: "图片",
+        isShow: true,
+      },
+      {
+        id: new Date().getTime(), //获取当前时间戳
+        type: 4,
+        name: "对话",
+        isShow: true,
+      },
+      {
+        id: new Date().getTime(), //获取当前时间戳
+        type: 5,
+        name: "按钮",
+        isShow: true,
+      },
+      {
+        id: new Date().getTime(), //获取当前时间戳
+        type: 6,
+        name: "按钮组",
+        isShow: true,
+      },
+      {
+        id: new Date().getTime(), //获取当前时间戳
+        type: 7,
+        name: "几何",
+        isShow: true,
+      },
+    ], //图层
+  },
+  {
+    id: 3,
+    name: "场景3",
+    levelList: [], //图层
+  },
+  {
+    id: 4,
+    name: "场景4",
+    levelList: [], //图层
+  },
+  {
+    id: 5,
+    name: "场景5",
+    levelList: [], //图层
   },
 ]);
 // 视频
