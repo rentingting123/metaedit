@@ -2,84 +2,180 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-27 22:20:26
+ * @LastEditTime: 2023-12-28 10:45:36
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div>
     <!-- 公共属性-->
-    <!-- 视频 -->
     <div class="scene color-bg2">
-      <div class="color-tx1">属性</div>
+      <div class="color-tx1">对话</div>
     </div>
     <div class="attribute">
-      <!-- 视频属性 -->
-      <el-form label-position="right" label-width="60px" :model="formValue1">
-        <div class="card">
-          <div class="card-header">
-            <span class="color-tx1">基础</span>
-          </div>
-          <el-form-item label="类型">
-            <div>{{ formValue1.public.typeName }}</div>
-          </el-form-item>
+      <div class="card">
+        <div class="card-header">
+          <span class="color-tx1">人物</span>
+          <el-popover
+            placement="right"
+            :width="400"
+            trigger="click"
+            :visible="visiblePerson"
+          >
+            <template #reference>
+              <!-- <q-btn
+                flat
+                color="#757575"
+                label="添加"
+                dense
+                @click="visiblePerson = true"
+              /> -->
+              <el-button plain type="info" text @click="visiblePerson = true"
+                >添加</el-button
+              >
+            </template>
+            <el-form
+              ref="ruleFormRef"
+              :model="formValue"
+              label-width="60px"
+              :rules="rules"
+            >
+              <el-form-item label="姓名" prop="name">
+                <el-input v-model="formValue.name" />
+              </el-form-item>
+            </el-form>
+            <div class="btn-group">
+              <q-btn
+                flat
+                label="取消"
+                dense
+                @click="visiblePerson = !visiblePerson"
+              />
+              <q-btn flat label="确定" @click="addPerson" dense />
+            </div>
+          </el-popover>
         </div>
-      </el-form>
+        <div class="card-body">
+          <div
+            class="card-body-item"
+            v-for="(item, index) in personList"
+            :key="index"
+          >
+            <span class="card-body-item-name">
+              <img
+                v-if="item.fileUrl"
+                :src="item.fileUrl"
+                alt=""
+                class="avatar"
+              />
+              <q-icon v-else name="bi-person-hearts" class="iconstyle" />
+              <span>{{ item.name }}</span>
+            </span>
+            <el-popover
+              placement="right"
+              :width="400"
+              trigger="click"
+              :visible="item.visible"
+            >
+              <template #reference>
+                <q-icon name="bi-pencil-square" class="iconstyle" />
+              </template>
+              <el-table :data="gridData">
+                <el-table-column width="150" property="date" label="date" />
+                <el-table-column width="100" property="name" label="name" />
+                <el-table-column
+                  width="300"
+                  property="address"
+                  label="address"
+                />
+              </el-table>
+              <div>
+                <q-btn
+                  flat
+                  color="primary"
+                  label="确定"
+                  @click="handleEdit"
+                  dense
+                />
+                <q-btn
+                  flat
+                  color="primary"
+                  label="取消"
+                  dense
+                  @click="item.visible = !item.visible"
+                />
+                <q-btn
+                  flat
+                  color="primary"
+                  label="删除"
+                  dense
+                  @click="deletePerson(index)"
+                />
+              </div>
+            </el-popover>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { handleError, reactive, ref } from "vue";
 //视频
-const formValue1 = ref({
-  // 变换：xy size
-  // 显示隐藏
-  public: {
-    typeId: 1,
-    typeName: "对话", //   类型（字符串）：固定值，不可编辑
-    id: "", // id（字符串）：可以更改，用作写脚本时查找组件。
-    name: "", // 名称（字符串）：可以更改，用作左侧大纲显示名称。
-    size: {
-      //变换：xy size
-      x: 1,
-      y: 1,
-      w: 10,
-      h: 10,
-    },
-    hide: true, //显示隐藏
+const personList = ref([
+  {
+    name: "小红",
+    fileUrl: "",
+    visible: false,
   },
-  video: {
-    path: "", //路径（文件选择）：显示文件路径，点击按钮可以重新选择。
-    loop: false, //循环（复选框）：勾选上，视频会自动循环。
-    autoplay: false, //自动播放（复选框）：勾选上后，视频会自动播放。
-    tileId: 1,
-    tileType: [
-      {
-        value: 1,
-        label: "拉伸",
-      },
-      {
-        value: 2,
-        label: "满铺",
-      },
-      {
-        value: 3,
-        label: "居中",
-      },
-    ], //平铺类型 可选项：拉伸、满铺、居中。
+  {
+    name: "小蓝",
+    fileUrl: "",
+    visible: false,
   },
-  layout: {
-    id: 1,
-    up: 1,
-    down: 1,
-    left: 1,
-    right: 1,
+  {
+    name: "小紫",
+    fileUrl: "",
+    visible: false,
   },
+]);
+const visiblePerson = ref(false);
+const formValue = reactive({
+  name: "",
+  fileUrl: "",
 });
+const rules = {
+  name: [
+    {
+      required: true,
+      message: "请输入姓名",
+      trigger: "blur",
+    },
+    { min: 3, max: 5, message: "姓名长度为3-5之间", trigger: "blur" },
+  ],
+};
+//添加人物
+const addPerson = () => {
+  console.log("addPerson");
+  personList.value.push({
+    name: "",
+    fileUrl: "",
+  });
+  visiblePerson = false;
+};
+//编辑人物
+const handleEdit = (index) => {
+  console.log(index);
+};
+//删除人物
+const deletePerson = (index) => {
+  console.log("deletePerson");
+  personList.value.splice(index, 1);
+};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .scene {
   display: flex;
   align-items: center;
@@ -87,30 +183,39 @@ const formValue1 = ref({
   padding: 10px;
   border-bottom: 1px solid #000;
   /* 固定在顶部栏 */
-  position: fixed;
-  width: 100%;
+  // position: fixed;
+  // width: 100%;
 }
-.attribute {
-  padding: 40px 0;
-  color: #fff;
-  .card {
-    border-bottom: 1px solid #333;
-    padding: 0 10px;
-  }
-  .el-card__header {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .card-header {
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.btn-group {
+  // display: flex;
+  // justify-content: space-between;
+  text-align: right;
+}
+.card-body {
+  padding: 10px 20px;
+  border: 1px solid #333;
+  color: $text1;
+  .card-body-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 30px;
-    padding: 20px;
-  }
-  .lable {
-    margin-right: 6px;
-    margin-left: 6px;
+    margin-bottom: 4px;
+    .card-body-item-name {
+      .avatar {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .iconstyle {
+        margin-right: 10px;
+      }
+    }
   }
 }
 </style>

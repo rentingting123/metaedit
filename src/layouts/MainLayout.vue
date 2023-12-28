@@ -154,13 +154,7 @@
                   @click="addScene"
                   dense
                 />
-                <q-btn
-                  flat
-                  dense
-                  color="primary"
-                  label="搜索"
-                  @click="searchScene"
-                />
+                <q-btn flat dense label="搜索" @click="searchScene" />
               </div>
             </div>
             <div class="scene color-bg2" v-else>
@@ -305,7 +299,6 @@
                 <q-btn
                   flat
                   dense
-                  color="primary"
                   label="搜索"
                   @click="searchLevel"
                 />
