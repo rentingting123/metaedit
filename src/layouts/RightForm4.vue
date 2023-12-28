@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-28 16:40:24
+ * @LastEditTime: 2023-12-28 17:23:17
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -423,7 +423,7 @@ const addContent = () => {
       //清空表单
       formCotent.value = {
         name: "",
-        imageUrl: "",
+        content: "",
       };
     } else {
       console.log("error");
@@ -451,6 +451,10 @@ const deleteContent = (index) => {
   /* 固定在顶部栏 */
   // position: fixed;
   // width: 100%;
+}
+.attribute {
+  padding: 40px 0;
+  color: #fff;
 }
 .card-header {
   display: flex;

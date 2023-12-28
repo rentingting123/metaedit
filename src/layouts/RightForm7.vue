@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-28 10:44:23
+ * @LastEditTime: 2023-12-28 17:10:48
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,7 +14,7 @@
       <div class="color-tx1">属性</div>
     </div>
     <div class="attribute">
-      <!-- 视频属性 -->
+      <!-- 几何 -->
       <el-form label-position="right" label-width="60px" :model="formValue1">
         <div class="card">
           <div class="card-header">
@@ -149,11 +149,6 @@
               />
             </el-select>
           </el-form-item>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <span class="color-tx1">事件</span>
-          </div>
         </div>
       </el-form>
     </div>
