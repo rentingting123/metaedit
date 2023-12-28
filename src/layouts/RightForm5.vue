@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-28 10:44:14
+ * @LastEditTime: 2023-12-28 17:09:41
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,77 +29,6 @@
           <el-form-item label="图标">
             <el-input v-model="formValue1.public.name" />
           </el-form-item>
-          <el-form-item label="位置">
-            <div>
-              <span class="lable">左</span>
-              <el-input-number
-                v-model="formValue1.public.size.x"
-                :min="1"
-                :max="10"
-                size="small"
-                controls-position="right"
-                style="width: 80px"
-              />
-            </div>
-            <div>
-              <span class="lable">右</span>
-              <el-input-number
-                v-model="formValue1.public.size.y"
-                :min="1"
-                :max="10"
-                size="small"
-                controls-position="right"
-                style="width: 80px"
-              />
-            </div>
-            <div>
-              <span class="lable">上</span>
-              <el-input-number
-                v-model="formValue1.public.size.w"
-                :min="1"
-                :max="10"
-                size="small"
-                controls-position="right"
-                style="width: 80px"
-              />
-            </div>
-            <div>
-              <span class="lable">下</span>
-              <el-input-number
-                v-model="formValue1.public.size.h"
-                :min="1"
-                :max="10"
-                size="small"
-                controls-position="right"
-                style="width: 80px"
-              />
-            </div>
-          </el-form-item>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <span class="color-tx1">控制</span>
-          </div>
-          <el-form-item label="布局类型" label-width="100px">
-            <el-select
-              v-model="formValue1.video.tileId"
-              class="m-2"
-              placeholder="Select"
-              size="small"
-            >
-              <el-option
-                v-for="item in formValue1.video.tileType"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <span class="color-tx1">事件</span>
-          </div>
         </div>
       </el-form>
     </div>
