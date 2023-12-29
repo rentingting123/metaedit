@@ -86,7 +86,7 @@
               <q-item clickable @click="handleAddSceneType(7, sceneIndex)">
                 <q-item-section
                   ><div>
-                    <q-icon name="bi-suit-diamond" class="iconstyle" />声音
+                    <q-icon name="bi-mic" class="iconstyle" />声音
                   </div></q-item-section
                 >
               </q-item>
@@ -247,7 +247,7 @@
                           <q-item-section
                             ><div>
                               <q-icon
-                                name="bi-suit-diamond"
+                                name="bi-mic"
                                 class="iconstyle"
                               />声音
                             </div></q-item-section
@@ -315,7 +315,7 @@
                   <q-icon name="bi-chat-dots" v-if="item.type == 4" />
                   <q-icon name="bi-stop-fill" v-if="item.type == 5" />
                   <q-icon name="bi-stop-btn" v-if="item.type == 6" />
-                  <q-icon name="bi-suit-diamond" v-if="item.type == 7" />
+                  <q-icon name="bi-mic" v-if="item.type == 7" />
                   {{ item.name }}</span
                 >
                 <div v-if="item.isShow">
