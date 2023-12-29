@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-29 22:56:38
+ * @LastEditTime: 2023-12-29 23:11:59
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -124,7 +124,7 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="动作" prop="action">
+              <!-- <el-form-item label="动作" prop="action">
                 <el-select v-model="formEvent.action" placeholder="请选择">
                   <el-option
                     v-for="item in actionList"
@@ -133,7 +133,7 @@
                     :value="item.name"
                   ></el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
             <div class="btn-group">
               <q-btn
@@ -187,7 +187,7 @@
                       ></el-option>
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="动作">
+                  <!-- <el-form-item label="动作">
                     <el-select v-model="item.action" placeholder="请选择">
                       <el-option
                         v-for="item2 in actionList"
@@ -196,7 +196,7 @@
                         :value="item2.name"
                       ></el-option>
                     </el-select>
-                  </el-form-item>
+                  </el-form-item> -->
                 </el-form>
                 <div class="btn-group">
                   <q-btn
@@ -292,17 +292,7 @@ const formEvent = ref({
 const eventList = ref([
   {
     trigger: "点击",
-    action: "开始",
-    visible: false,
-  },
-  {
-    trigger: "触摸",
-    action: "停止",
-    visible: false,
-  },
-  {
-    trigger: "触摸",
-    action: "开始",
+    action: "",
     visible: false,
   },
 ]);
@@ -312,30 +302,9 @@ const triggerList = ref([
     id: 1,
     name: "点击",
   },
-  {
-    id: 2,
-    name: "触摸",
-  },
-  {
-    id: 3,
-    name: "滑动",
-  },
 ]);
 //动作列表
-const actionList = ref([
-  {
-    id: 1,
-    name: "开始",
-  },
-  {
-    id: 2,
-    name: "停止",
-  },
-  {
-    id: 3,
-    name: "跳转",
-  },
-]);
+const actionList = ref([]);
 
 //添加内容
 const addEvent = () => {
@@ -416,5 +385,8 @@ const deleteEvent = (index) => {
       }
     }
   }
+}
+.btn-group {
+  text-align: right;
 }
 </style>

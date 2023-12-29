@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-29 22:56:09
+ * @LastEditTime: 2023-12-29 23:06:27
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -314,18 +314,13 @@ const rulesEvent = {
 //事件列表
 const eventList = ref([
   {
-    trigger: "点击",
-    action: "开始",
+    trigger: "播放开始",
+    action: "",
     visible: false,
   },
   {
-    trigger: "触摸",
-    action: "停止",
-    visible: false,
-  },
-  {
-    trigger: "触摸",
-    action: "开始",
+    trigger: "播放结束",
+    action: "",
     visible: false,
   },
 ]);
@@ -333,32 +328,15 @@ const eventList = ref([
 const triggerList = ref([
   {
     id: 1,
-    name: "点击",
+    name: "播放开始",
   },
   {
     id: 2,
-    name: "触摸",
-  },
-  {
-    id: 3,
-    name: "滑动",
+    name: "播放结束",
   },
 ]);
 //动作列表
-const actionList = ref([
-  {
-    id: 1,
-    name: "开始",
-  },
-  {
-    id: 2,
-    name: "停止",
-  },
-  {
-    id: 3,
-    name: "跳转",
-  },
-]);
+const actionList = ref([]);
 
 //添加内容
 const addEvent = () => {
@@ -405,7 +383,7 @@ const deleteEvent = (index) => {
     border-bottom: 1px solid #333;
     padding: 0 10px;
   }
-  
+
   .card-header {
     display: flex;
     justify-content: space-between;

@@ -18,9 +18,6 @@
               <q-item clickable v-close-popup>
                 <q-item-section>保存</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup>
-                <q-item-section>设置</q-item-section>
-              </q-item>
             </q-list>
           </q-menu>
         </div>
@@ -100,33 +97,7 @@
         <q-space />
         <q-btn flat color="primary" label="运行" @click="handleRun" />
         <q-btn flat color="primary" label="编译" @click="handleCompile" />
-        <q-btn flat color="primary" label="横屏" @click="handleLandscape" />
-        <div>
-          <q-btn flat color="primary" label="显示比例" @click="handleScale" />
-          <q-menu
-            auto-close
-            dark
-            transition-show="flip-right"
-            transition-hide="flip-left"
-          >
-            <q-list dense style="min-width: 100px">
-              <q-item clickable>
-                <q-item-section>4:3 </q-item-section>
-              </q-item>
-              <q-item clickable>
-                <q-item-section>16:9</q-item-section>
-              </q-item>
-              <q-item clickable>
-                <q-item-section>3:2</q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item clickable>
-                <q-item-section>自定义</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </div>
-
+   
         <q-space />
         <q-btn dense flat icon="minimize" @click="handleMainEvent('min')" />
         <q-btn dense flat icon="crop_square" @click="handleMainEvent('max')" />
