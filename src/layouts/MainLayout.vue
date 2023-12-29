@@ -89,7 +89,7 @@
               <q-item clickable @click="handleAddSceneType(7, sceneIndex)">
                 <q-item-section
                   ><div>
-                    <q-icon name="bi-suit-diamond" class="iconstyle" />几何
+                    <q-icon name="bi-suit-diamond" class="iconstyle" />声音
                   </div></q-item-section
                 >
               </q-item>
@@ -278,7 +278,7 @@
                               <q-icon
                                 name="bi-suit-diamond"
                                 class="iconstyle"
-                              />几何
+                              />声音
                             </div></q-item-section
                           >
                         </q-item>
@@ -458,7 +458,7 @@ const sceneList = ref([
       {
         id: new Date().getTime(), //获取当前时间戳
         type: 7,
-        name: "几何",
+        name: "声音",
         isShow: true,
       },
     ], //图层
@@ -506,7 +506,7 @@ const sceneList = ref([
       {
         id: new Date().getTime(), //获取当前时间戳
         type: 7,
-        name: "几何",
+        name: "声音",
         isShow: true,
       },
     ], //图层
@@ -533,7 +533,7 @@ const sceneList = ref([
 // 对话
 // 按钮
 // 按钮组
-// 几何
+// 声音
 const levelType = ref({
   1: "视频",
   2: "序列帧",
@@ -541,7 +541,7 @@ const levelType = ref({
   4: "对话",
   5: "按钮",
   6: "按钮组",
-  7: "几何",
+  7: "声音",
 });
 
 const leftDrawerOpen = ref(false);
