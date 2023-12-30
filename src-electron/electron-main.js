@@ -9,6 +9,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
 import os from 'os'
+import {setup} from './api'
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
@@ -63,6 +64,8 @@ function createWindow() {
     mainWindow = null
     app.quit()
   })
+
+  setup(mainWindow);
 }
 
 app.whenReady().then(createWindow)
