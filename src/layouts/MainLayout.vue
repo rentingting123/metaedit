@@ -6,17 +6,20 @@
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <div class="cursor-pointer non-selectable">
           菜单
-          <q-menu dark transition-show="flip-right" transition-hide="flip-left">
+          <q-menu dark >
             <q-list dense style="min-width: 100px">
               <q-item clickable v-close-popup>
                 <q-item-section>新建</q-item-section>
               </q-item>
               <q-item clickable v-close-popup>
-                <q-item-section>打开</q-item-section>
+                <q-item-section @click="viewOpenFile">打开</q-item-section>
               </q-item>
               <q-separator />
               <q-item clickable v-close-popup>
-                <q-item-section>保存</q-item-section>
+                <q-item-section @click="viewSaveFile">保存</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup>
+                <q-item-section @click="viewSelectFile">设置</q-item-section>
               </q-item>
             </q-list>
           </q-menu>
@@ -27,8 +30,7 @@
           <q-menu
             auto-close
             dark
-            transition-show="flip-right"
-            transition-hide="flip-left"
+
           >
             <q-list dense style="min-width: 100px">
               <q-item clickable>
@@ -361,7 +363,6 @@
 
 <script setup >
 import { ref } from "vue";
-const { ipcRenderer } = require("electron");
 import RightForm1 from "./RightForm1.vue";
 import RightForm2 from "./RightForm2.vue";
 import RightForm3 from "./RightForm3.vue";
@@ -370,13 +371,65 @@ import RightForm5 from "./RightForm5.vue";
 import RightForm6 from "./RightForm6.vue";
 import RightForm7 from "./RightForm7.vue";
 
+import {selectFile,openFile,openAndReadFile,saveFile} from "../api";
+// import { el } from "element-plus/es/locale";
+
 //组件注册
 
-// $q.dark
-//右上角按钮方法
-const handleMainEvent = (eventName) => {
-  ipcRenderer.send(eventName);
-};
+const viewOpenFile = async ()=>{
+
+  // openFile 该方法只返回文件路径，适用于打开文件。
+
+  //打开并读取，返回文件内容。openAndReadFile
+  let rel = await openFile();
+  //打开成功
+  if(rel){
+
+
+    console.log("文件路径:", rel.filePath);
+    console.log("文件内容:", rel.data.toString());
+  }else{
+    //用户取消，什么都不做。
+  }
+
+}
+
+
+//保存文件，返回文件路径和内容
+const viewSaveFile = async ()=>{
+
+// openFile 该方法只返回文件路径，适用于打开文件。
+
+//打开并读取，返回文件内容。
+let filePath = await saveFile({data:'保存的内容'});
+//打开成功
+if(filePath && typeof filePath){
+  console.log("保存成功 filePath:",filePath);
+}else{
+  //用户取消，什么都不做。
+}
+
+}
+
+
+
+//选择文件，只返回选择的文件路径，不返回文件内容
+const viewSelectFile = async ()=>{
+
+
+//选择并读取，返回文件内容。
+let filePath = await selectFile();
+//打开成功
+if(filePath && typeof filePath){
+  console.log("选择文件 filePath:",filePath);
+}else{
+  //用户取消，什么都不做。
+}
+
+}
+
+
+
 const splitterModel = ref(50); // start at 50%
 // 场景
 const sceneText = ref("");
