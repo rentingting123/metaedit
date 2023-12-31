@@ -6,9 +6,9 @@
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
         <div class="cursor-pointer non-selectable">
           菜单
-          <q-menu dark >
+          <q-menu dark transition-show="flip-right" transition-hide="flip-left">
             <q-list dense style="min-width: 100px">
-              <q-item clickable v-close-popup>
+              <q-item clickable v-close-popup @click="dialogProject = true">
                 <q-item-section>新建</q-item-section>
               </q-item>
               <q-item clickable v-close-popup>
@@ -25,12 +25,13 @@
           </q-menu>
         </div>
 
-        <div class="q-ml-md cursor-pointer non-selectable">
+        <!-- <div class="q-ml-md cursor-pointer non-selectable">
           添加
           <q-menu
             auto-close
             dark
-
+            transition-show="flip-right"
+            transition-hide="flip-left"
           >
             <q-list dense style="min-width: 100px">
               <q-item clickable>
@@ -94,12 +95,12 @@
               </q-item>
             </q-list>
           </q-menu>
-        </div>
+        </div> -->
 
         <q-space />
         <q-btn flat color="primary" label="运行" @click="handleRun" />
         <q-btn flat color="primary" label="编译" @click="handleCompile" />
-   
+
         <q-space />
         <q-btn dense flat icon="minimize" @click="handleMainEvent('min')" />
         <q-btn dense flat icon="crop_square" @click="handleMainEvent('max')" />
@@ -116,226 +117,18 @@
     >
       <q-splitter v-model="splitterModel" horizontal dark style="height: 100%">
         <template v-slot:before>
-          <div class="content">
-            <div class="scene color-bg2" v-if="!showSearchScene">
-              <div class="color-tx1">场景</div>
-              <div>
-                <q-btn
-                  flat
-                  color="primary"
-                  label="添加"
-                  @click="addScene"
-                  dense
-                />
-                <!-- <q-btn flat dense color="primary" label="搜索" @click="searchScene" /> -->
-              </div>
-            </div>
-            <div class="scene color-bg2" v-else>
-              <q-icon
-                style="color: #ccc; font-size: 1.4em"
-                name="bi-arrow-left-short"
-                @click="searchScene"
-              />
-              <div>
-                <q-input
-                  dark
-                  rounded
-                  clearable
-                  v-model="sceneText"
-                  placeholder="关键字搜索"
-                  standout
-                  dense
-                  hide-bottom-space
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="search" />
-                  </template>
-                </q-input>
-              </div>
-            </div>
-            <!-- 场景列表 -->
-            <div class="side-list">
-              <div
-                class="side-item color-tx1"
-                v-for="(item, index) in sceneList"
-                :key="index"
-                :class="{ active: sceneIndex === index }"
-                @click="handleSceneClick(index)"
-              >
-                <span>
-                  <q-icon name="bi-layout-wtf" class="iconstyle" />
-                  {{ item.name }}
-                </span>
-
-                <div v-if="sceneIndex === index">
-                  <q-icon
-                    name="bi-trash3"
-                    class="iconstyle"
-                    v-if="sceneList.length > 1"
-                    @click="deleteScene(index)"
-                  />
-                  <span>
-                    <q-icon name="bi-plus" />
-                    <q-menu
-                      auto-close
-                      dark
-                      transition-show="flip-right"
-                      transition-hide="flip-left"
-                    >
-                      <q-list dense style="min-width: 100px">
-                        <q-item clickable @click="handleAddSceneType(1, index)">
-                          <q-item-section>
-                            <div>
-                              <q-icon
-                                name="bi-camera-video"
-                                class="iconstyle"
-                              />视频
-                            </div>
-                          </q-item-section>
-                        </q-item>
-                        <q-item clickable @click="handleAddSceneType(2, index)">
-                          <q-item-section>
-                            <div>
-                              <q-icon
-                                name="bi-cursor-text"
-                                class="iconstyle"
-                              />序列帧
-                            </div></q-item-section
-                          >
-                        </q-item>
-                        <q-separator />
-                        <q-item clickable @click="handleAddSceneType(3, index)">
-                          <q-item-section>
-                            <div>
-                              <q-icon
-                                name="bi-card-image"
-                                class="iconstyle"
-                              />图片
-                            </div>
-                          </q-item-section>
-                        </q-item>
-                        <q-item clickable @click="handleAddSceneType(4, index)">
-                          <q-item-section
-                            ><div>
-                              <q-icon
-                                name="bi-chat-dots"
-                                class="iconstyle"
-                              />对话
-                            </div></q-item-section
-                          >
-                        </q-item>
-                        <q-item clickable @click="handleAddSceneType(5, index)">
-                          <q-item-section
-                            ><div>
-                              <q-icon
-                                name="bi-stop-fill"
-                                class="iconstyle"
-                              />按钮
-                            </div></q-item-section
-                          >
-                        </q-item>
-                        <q-item clickable @click="handleAddSceneType(6, index)">
-                          <q-item-section
-                            ><div>
-                              <q-icon
-                                name="bi-stop-btn"
-                                class="iconstyle"
-                              />按钮组
-                            </div></q-item-section
-                          >
-                        </q-item>
-                        <q-separator />
-                        <q-item clickable @click="handleAddSceneType(7, index)">
-                          <q-item-section
-                            ><div>
-                              <q-icon
-                                name="bi-mic"
-                                class="iconstyle"
-                              />声音
-                            </div></q-item-section
-                          >
-                        </q-item>
-                      </q-list>
-                    </q-menu>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SceneList
+            @handleSceneList="handleSceneList"
+            @handleMain="handleMain"
+            @handleSceneIndex="handleSceneIndex"
+          ></SceneList>
         </template>
 
         <template v-slot:after>
-          <div class="content">
-            <div class="scene color-bg2" v-if="!showSearchLevel">
-              <div class="color-tx1">图层</div>
-              <!-- <div>
-                <q-btn
-                  flat
-                  dense
-                  label="搜索"
-                  color="primary"
-                  @click="searchLevel"
-                />
-              </div> -->
-            </div>
-            <div class="scene color-bg2" v-else>
-              <q-icon
-                style="color: #ccc; font-size: 1.4em"
-                name="bi-arrow-left-short"
-                @click="searchLevel"
-              />
-              <div>
-                <q-input
-                  dark
-                  rounded
-                  clearable
-                  v-model="sceneText"
-                  placeholder="关键字搜索"
-                  standout
-                  dense
-                  hide-bottom-space
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="search" />
-                  </template>
-                </q-input>
-              </div>
-            </div>
-            <div class="side-list">
-              <!-- 图层列表 -->
-              <div
-                class="side-item color-tx1"
-                v-for="(item, index) in sceneList[sceneIndex].levelList"
-                :key="index"
-                :class="{ active: levelIndex === index }"
-                @click="handleLevelClick(item.type, index)"
-              >
-                <span>
-                  <q-icon name="bi-camera-video" v-if="item.type == 1" />
-                  <q-icon name="bi-cursor-text" v-if="item.type == 2" />
-                  <q-icon name="bi-card-image" v-if="item.type == 3" />
-                  <q-icon name="bi-chat-dots" v-if="item.type == 4" />
-                  <q-icon name="bi-stop-fill" v-if="item.type == 5" />
-                  <q-icon name="bi-stop-btn" v-if="item.type == 6" />
-                  <q-icon name="bi-mic" v-if="item.type == 7" />
-                  {{ item.name }}</span
-                >
-                <div v-if="item.isShow">
-                  <q-icon
-                    name="bi-trash3"
-                    @click="deleteLevel(index)"
-                    class="iconstyle"
-                  />
-                  <q-icon name="bi-eye" @click="item.isShow = false" />
-                </div>
-                <q-icon
-                  v-else
-                  name="bi-eye-slash"
-                  @click="item.isShow = true"
-                />
-              </div>
-            </div>
-          </div>
+          <Objects
+            :objects="default_project.sceneList[sceneIndex].objects"
+            @handleObjectsClick="handleObjectsClick"
+          ></Objects>
         </template>
       </q-splitter>
     </q-drawer>
@@ -347,15 +140,51 @@
       class="color-bg2"
       side="right"
     >
-      <RightForm1 v-if="curType == 1"></RightForm1>
-      <RightForm2 v-if="curType == 2"></RightForm2>
-      <RightForm3 v-if="curType == 3"></RightForm3>
-      <RightForm4 v-if="curType == 4"></RightForm4>
-      <RightForm5 v-if="curType == 5"></RightForm5>
-      <RightForm6 v-if="curType == 6"></RightForm6>
-      <RightForm7 v-if="curType == 7"></RightForm7>
+      <Video v-if="curType == 'video'"></Video>
+      <Frame v-if="curType == 'frame'"></Frame>
+      <Photo v-if="curType == 'photo'"></Photo>
+      <Dialog v-if="curType == 'dialog'"></Dialog>
+      <Button v-if="curType == 'button'"></Button>
+      <ButtonGroup v-if="curType == 'buttonGroup'"></ButtonGroup>
+      <Audio v-if="curType == 'audio'"></Audio>
+      <!--   :data="default_project.sceneList[sceneIndex].objects[objectsIndex]" -->
+      <Scene
+        v-if="curType == 'scene'"
+        :data="default_project.sceneList[sceneIndex]"
+      ></Scene>
     </q-drawer>
+    <!-- 新建弹框 -->
+    <el-dialog v-model="dialogProject" title="新建">
+      <el-form :model="formProject" :rules="rules" ref="projectRef">
+        <el-form-item label="项目名称" prop="name">
+          <el-input v-model="formProject.name" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="保存路径" prop="rootPath">
+          <el-input
+            v-model="formProject.rootPath"
+            autocomplete="off"
+            style="width: 90%; margin-right: 10px"
+          />
+          <q-icon
+            style="color: #ccc; font-size: 1.4em"
+            name="bi-files"
+            @click="selectFilePath"
+          ></q-icon>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="submitForm"> 确定 </el-button>
+          <el-button @click="dialogProject = false">取消</el-button>
+        </span>
+      </template>
+    </el-dialog>
     <q-page-container>
+      {{ sceneIndex }}
+      {{ objectsIndex }}
+      {{ curType }}
+      <br />
+      {{ default_project }}
       <router-view />
     </q-page-container>
   </q-layout>
@@ -363,309 +192,185 @@
 
 <script setup >
 import { ref } from "vue";
-import RightForm1 from "./RightForm1.vue";
-import RightForm2 from "./RightForm2.vue";
-import RightForm3 from "./RightForm3.vue";
-import RightForm4 from "./RightForm4.vue";
-import RightForm5 from "./RightForm5.vue";
-import RightForm6 from "./RightForm6.vue";
-import RightForm7 from "./RightForm7.vue";
+import SceneList from "./components/sceneList.vue";
+import Objects from "./components/objects.vue";
 
-import {selectFile,openFile,openAndReadFile,saveFile} from "../api";
-// import { el } from "element-plus/es/locale";
+import Scene from "./components/right/scene.vue";
+import Video from "./components/right/video.vue";
+import Frame from "./components/right/frame.vue";
+import Photo from "./components/right/photo.vue";
+import Dialog from "./components/right/dialog.vue";
+import Button from "./components/right/button.vue";
+import ButtonGroup from "./components/right/buttonGroup.vue";
+import Audio from "./components/right/audio.vue";
 
-//组件注册
-
-const viewOpenFile = async ()=>{
-
-  // openFile 该方法只返回文件路径，适用于打开文件。
-
-  //打开并读取，返回文件内容。openAndReadFile
-  let rel = await openFile();
-  //打开成功
-  if(rel){
-
-
-    console.log("文件路径:", rel.filePath);
-    console.log("文件内容:", rel.data.toString());
-  }else{
-    //用户取消，什么都不做。
-  }
-
-}
-
-
-//保存文件，返回文件路径和内容
-const viewSaveFile = async ()=>{
-
-// openFile 该方法只返回文件路径，适用于打开文件。
-
-//打开并读取，返回文件内容。
-let filePath = await saveFile({data:'保存的内容'});
-//打开成功
-if(filePath && typeof filePath){
-  console.log("保存成功 filePath:",filePath);
-}else{
-  //用户取消，什么都不做。
-}
-
-}
-
-
-
-//选择文件，只返回选择的文件路径，不返回文件内容
-const viewSelectFile = async ()=>{
-
-
-//选择并读取，返回文件内容。
-let filePath = await selectFile();
-//打开成功
-if(filePath && typeof filePath){
-  console.log("选择文件 filePath:",filePath);
-}else{
-  //用户取消，什么都不做。
-}
-
-}
-
-
-
-const splitterModel = ref(50); // start at 50%
-// 场景
-const sceneText = ref("");
-const showSearchScene = ref(false); //场景
-const showSearchLevel = ref(false); //图层
-const sceneIndex = ref(0); //场景当前选中
-const levelIndex = ref(0); //图层当前选中
-const curType = ref(1); //类型当前选中
-const sceneList = ref([
-  {
-    id: 1,
-    name: "场景1",
-    levelList: [
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 1,
-        name: "视频",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 2,
-        name: "序列帧",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 3,
-        name: "图片",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 4,
-        name: "对话",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 5,
-        name: "按钮",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 6,
-        name: "按钮组",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 7,
-        name: "声音",
-        isShow: true,
-      },
-    ], //图层
-  },
-  {
-    id: 2,
-    name: "场景2",
-    levelList: [
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 1,
-        name: "视频",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 2,
-        name: "序列帧",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 3,
-        name: "图片",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 4,
-        name: "对话",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 5,
-        name: "按钮",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 6,
-        name: "按钮组",
-        isShow: true,
-      },
-      {
-        id: new Date().getTime(), //获取当前时间戳
-        type: 7,
-        name: "声音",
-        isShow: true,
-      },
-    ], //图层
-  },
-  {
-    id: 3,
-    name: "场景3",
-    levelList: [], //图层
-  },
-  {
-    id: 4,
-    name: "场景4",
-    levelList: [], //图层
-  },
-  {
-    id: 5,
-    name: "场景5",
-    levelList: [], //图层
-  },
-]);
-// 视频
-// 序列帧
-// 图片
-// 对话
-// 按钮
-// 按钮组
-// 声音
-const levelType = ref({
-  1: "视频",
-  2: "序列帧",
-  3: "图片",
-  4: "对话",
-  5: "按钮",
-  6: "按钮组",
-  7: "声音",
-});
-
+import { selectFile, openFile, openAndReadFile, saveFile } from "../api";
 const leftDrawerOpen = ref(false);
 const rightDrawerOpen = ref(true);
 const toggleLeftDrawer = (eventName) => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+const splitterModel = ref(50); // start at 50%
+const default_project = ref({
+  sceneList: [
+    {
+      name: "场景1",
+      path: "",
+      direction: null,
+      objects: [],
+    },
+  ],
+  main: "场景1",
+  name: "我的项目",
+  rootPath: "/Users/admin", //地址
+});
+const formProject = ref({
+  name: "我的项目",
+  rootPath: "/Users/admin",
+});
+// 新建弹窗
+const dialogProject = ref(false);
+// 弹框表单
+const projectRef = ref(null);
+const rules = {
+  name: [{ required: true, message: "请输入项目名称", trigger: "blur" }],
+  rootPath: [
+    {
+      required: true,
+      message: "请选择项目地址",
+      trigger: "change",
+    },
+  ],
+};
+const selectFilePath = async () => {
+  // openFile 该方法只返回文件路径，适用于打开文件。
+  //打开并读取，返回文件内容。openAndReadFile
+  let rel = await openFile();
+  //打开成功
+  if (rel) {
+    console.log("文件路径:", rel.filePath);
+    console.log("文件内容:", rel.data.toString());
+    formProject.value.rootPath = rel.filePath;
+  } else {
+    //用户取消，什么都不做。
+  }
+};
+//新建提交
+const submitForm = async () => {
+  await projectRef.value.validate((valid, fields) => {
+    if (valid) {
+      default_project.value.name = formProject.value.name;
+      default_project.value.rootPath = formProject.value.rootPath;
+      dialogProject.value = false;
+    } else {
+      console.log("error submit!", fields);
+    }
+  });
+};
+//菜单 - 打开
+const viewOpenFile = async () => {
+  // openFile 该方法只返回文件路径，适用于打开文件。
+
+  //打开并读取，返回文件内容。openAndReadFile
+  let rel = await openFile();
+  //打开成功
+  if (rel) {
+    console.log("文件路径:", rel.filePath);
+    console.log("文件内容:", rel.data.toString());
+  } else {
+    //用户取消，什么都不做。
+  }
+};
+//保存文件，返回文件路径和内容
+const viewSaveFile = async () => {
+  // openFile 该方法只返回文件路径，适用于打开文件。
+
+  //打开并读取，返回文件内容。
+  let filePath = await saveFile({ data: "保存的内容" });
+  //打开成功
+  if (filePath && typeof filePath) {
+    console.log("保存成功 filePath:", filePath);
+  } else {
+    //用户取消，什么都不做。
+  }
+};
+//选择文件，只返回选择的文件路径，不返回文件内容
+const viewSelectFile = async () => {
+  //选择并读取，返回文件内容。
+  let filePath = await selectFile();
+  //打开成功
+  if (filePath && typeof filePath) {
+    console.log("选择文件 filePath:", filePath);
+  } else {
+    //用户取消，什么都不做。
+  }
+};
+// 场景 接收 子组件出来的 sceneList
+const handleSceneList = (data) => {
+  default_project.value.sceneList = data;
+};
+//场景 设置主场景
+const handleMain = (data) => {
+  default_project.value.main = data;
+};
+const curType = ref("scene"); //当前显示的属性
+const sceneIndex = ref(0); //场景当前选中
+//场景 当前选中
+const handleSceneIndex = (data, type) => {
+  curType.value = type;
+  sceneIndex.value = data;
+};
+const objectsIndex = ref(); //图层当前选中
+
+//图层 当前选中
+const handleObjectsClick = (type, index) => {
+  console.log(type, index, "type, index");
+  curType.value = type;
+  objectsIndex.value = index;
+};
+
+const levelType = ref({
+  video: "视频",
+  frame: "序列帧",
+  photo: "图片",
+  dialog: "对话",
+  button: "按钮",
+  buttonGroup: "按钮组",
+  audio: "声音",
+});
 //运行
 const handleRun = () => {
-  console.log("run");
+  console.log("运行");
 };
 //编译
 const handleCompile = () => {
-  console.log("compile");
+  console.log("编译");
 };
-//  横屏
-const handleLandscape = () => {
-  console.log("landscape");
-};
-//handleScale
-const handleScale = () => {
-  console.log("scale");
-};
+
 //添加场景
 const addScene = () => {
   console.log("addScene");
   //给sceneList 追加
-  sceneList.value.push({
+  default_project.value.sceneList.push({
     id: new Date().getTime(), //获取当前时间戳
-    name: "场景" + (sceneList.value.length + 1),
-    levelList: [], //图层
+    name: "场景" + (default_project.value.sceneList.length + 1),
+    objects: [], //图层
   });
 };
-//搜索场景
-const searchScene = () => {
-  showSearchScene.value = !showSearchScene.value;
-};
-//搜索图层
-const searchLevel = () => {
-  showSearchLevel.value = !showSearchLevel.value;
-};
-// 一级场景点击
-const handleSceneClick = (index) => {
-  sceneIndex.value = index;
-};
-//场景删除
-const deleteScene = (index) => {
-  sceneList.value.splice(index, 1);
-};
+
 //添加场景类型
 const handleAddSceneType = (type, index) => {
-  //给sceneList[index].levelList 追加
-  sceneList.value[index].levelList.push({
-    id: new Date().getTime(), //获取当前时间戳
+  //给sceneList[index].objects 追加
+  default_project.value.sceneList[index].objects.push({
     type: type,
-    name: levelType.value[type] + (sceneList.value[index].levelList.length + 1),
+    name:
+      levelType.value[type] +
+      (default_project.value.sceneList[index].objects.length + 1),
     isShow: true,
   });
 };
-// 二级 图层点击
-const handleLevelClick = (type, index) => {
-  levelIndex.value = index;
-  curType.value = type;
-};
-//二级 层级删除
-const deleteLevel = (index) => {
-  sceneList.value[sceneIndex.value].levelList.splice(index, 1);
-};
 </script>
-<style scoped>
-.side-list {
-  padding-top: 60px;
-}
-.side-item {
-  text-align: left;
-  width: 100%;
-  padding: 6px 10px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.active {
-  background: #333;
-  color: #fff;
-}
-.scene {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #000;
-  /* 固定在顶部栏 */
-  position: fixed;
-  width: 100%;
-}
-.search-ipt {
-  height: 20px;
-  margin-left: 20px;
-}
+<style lang="scss" scoped>
 .iconstyle {
   margin-right: 6px;
 }
