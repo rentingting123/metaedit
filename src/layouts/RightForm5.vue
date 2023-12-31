@@ -112,7 +112,6 @@
               ref="eventFormRef"
               :model="formEvent"
               label-width="80px"
-              :rules="rulesEvent"
             >
               <el-form-item label="触发器" prop="trigger">
                 <el-select v-model="formEvent.trigger" placeholder="请选择">
