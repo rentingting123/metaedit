@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-28 17:23:17
+ * @LastEditTime: 2023-12-31 23:38:04
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,9 +10,22 @@
   <div>
     <!-- 公共属性-->
     <div class="scene color-bg2">
-      <div class="color-tx1">对话</div>
+      <div class="color-tx1">属性</div>
     </div>
     <div class="attribute">
+      <el-form label-position="right" label-width="60px" :model="formValue4">
+        <div class="card">
+          <div class="card-header">
+            <span class="color-tx1">基础</span>
+          </div>
+          <el-form-item label="类型">
+            <div>对话框</div>
+          </el-form-item>
+          <el-form-item label="name">
+            <el-input v-model="formValue4.name" size="small" />
+          </el-form-item>
+        </div>
+      </el-form>
       <div class="card">
         <div class="card-header">
           <span class="color-tx1">人物</span>
@@ -52,10 +65,10 @@
                 </el-upload>
               </el-form-item>
               <el-form-item label="人物名称" prop="name">
-                <el-input v-model="formValue.name" />
+                <el-input v-model="formValue.name" size="small" />
               </el-form-item>
               <el-form-item label="头像">
-                <el-input v-model="formValue.imageUrl" />
+                <el-input v-model="formValue.imageUrl" size="small" />
               </el-form-item>
             </el-form>
             <div class="btn-group">
@@ -126,10 +139,10 @@
                     </el-upload>
                   </el-form-item>
                   <el-form-item label="人物名称" prop="name">
-                    <el-input v-model="item.name" />
+                    <el-input v-model="item.name" size="small" />
                   </el-form-item>
                   <el-form-item label="头像">
-                    <el-input v-model="item.imageUrl" />
+                    <el-input v-model="item.imageUrl" size="small" />
                   </el-form-item>
                 </el-form>
                 <div class="btn-group">
@@ -199,7 +212,11 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="内容" prop="content">
-                <el-input v-model="formCotent.content" type="textarea" />
+                <el-input
+                  v-model="formCotent.content"
+                  type="textarea"
+                  size="small"
+                />
               </el-form-item>
             </el-form>
             <div class="btn-group">
@@ -255,7 +272,11 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item label="内容">
-                    <el-input v-model="item.content" type="textarea" />
+                    <el-input
+                      v-model="item.content"
+                      type="textarea"
+                      size="small"
+                    />
                   </el-form-item>
                 </el-form>
                 <div class="btn-group">
@@ -293,6 +314,140 @@
           </tempalte>
         </div>
       </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="color-tx1">事件</span>
+          <el-popover
+            placement="right"
+            :width="300"
+            trigger="click"
+            :visible="visibleEvent"
+          >
+            <template #reference>
+              <el-button plain text @click="visibleEvent = true"
+                >添加</el-button
+              >
+            </template>
+            <el-form ref="eventFormRef" :model="formEvent" label-width="80px">
+              <el-form-item label="触发器" prop="trigger">
+                <el-select v-model="formEvent.trigger" placeholder="请选择">
+                  <el-option
+                    v-for="item in triggerList"
+                    :key="item.name"
+                    :label="item.name"
+                    :value="item.name"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="动作" prop="action">
+                <el-select v-model="formEvent.action" placeholder="请选择">
+                  <el-option
+                    v-for="item in actionList"
+                    :key="item.name"
+                    :label="item.name"
+                    :value="item.name"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <div class="btn-group">
+              <q-btn
+                flat
+                label="取消"
+                dense
+                color="primary"
+                @click="visibleEvent = !visibleEvent"
+              />
+              <q-btn
+                flat
+                label="确定"
+                color="primary"
+                @click="addEvent()"
+                dense
+              />
+            </div>
+          </el-popover>
+        </div>
+        <div class="card-body">
+          <tempalte v-if="eventList.length > 0">
+            <div
+              class="card-body-item"
+              v-for="(item, index) in eventList"
+              :key="index"
+            >
+              <span class="card-body-item-name">
+                <span>{{ item.trigger }}{{ item.action }}</span>
+              </span>
+              <el-popover
+                placement="right"
+                :width="300"
+                trigger="click"
+                :visible="item.visible"
+              >
+                <template #reference>
+                  <q-icon
+                    name="bi-pencil-square"
+                    class="iconstyle"
+                    @click="item.visible = true"
+                  />
+                </template>
+                <el-form :model="item" label-width="110px">
+                  <el-form-item label="触发器" prop="name">
+                    <el-select v-model="item.trigger" placeholder="请选择">
+                      <el-option
+                        v-for="item1 in triggerList"
+                        :key="item1.name"
+                        :label="item1.name"
+                        :value="item1.name"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="动作">
+                    <el-select v-model="item.action" placeholder="请选择">
+                      <el-option
+                        v-for="item2 in actionList"
+                        :key="item2.name"
+                        :label="item2.name"
+                        :value="item2.name"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-form>
+                <div class="btn-group">
+                  <q-btn
+                    flat
+                    color="primary"
+                    label="确定"
+                    @click="handleEditEvent(item)"
+                    dense
+                  />
+                  <q-btn
+                    flat
+                    color="primary"
+                    label="取消"
+                    dense
+                    @click="item.visible = !item.visible"
+                  />
+                  <q-btn
+                    flat
+                    color="primary"
+                    label="删除"
+                    dense
+                    @click="deleteEvent(index)"
+                  />
+                </div>
+              </el-popover>
+            </div>
+          </tempalte>
+          <tempalte v-else>
+            <div class="card-body-item">
+              <span class="card-body-item-name">
+                <span>暂无事件,请先添加吧</span>
+              </span>
+            </div>
+          </tempalte>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -301,6 +456,10 @@
 import { handleError, reactive, ref } from "vue";
 const ruleFormRef = ref(null);
 const contentFormRef = ref(null);
+const formValue4 = ref({
+  type: "dialog",
+  name: "",
+});
 //人物列表
 const personList = ref([
   {
@@ -375,7 +534,6 @@ const rulesCotent = {
   ],
 };
 const handleAvatarSuccess = (res) => {
-  console.log(res);
   formValue.imageUrl = res.url;
 };
 const beforeAvatarUpload = (file) => {
@@ -390,7 +548,6 @@ const beforeAvatarUpload = (file) => {
 };
 //添加人物
 const addPerson = () => {
-  console.log("addPerson");
   ruleFormRef.value.validate((valid) => {
     if (valid) {
       personList.value.push(formValue.value);
@@ -411,7 +568,7 @@ const handleEdit = (item) => {
 };
 //删除人物
 const deletePerson = (index) => {
-  console.log("deletePerson");
+
   personList.value.splice(index, 1);
 };
 //添加内容
@@ -436,8 +593,69 @@ const handleEditContent = (item) => {
 };
 //删除内容
 const deleteContent = (index) => {
-  console.log("deletePerson");
+
   contentList.value.splice(index, 1);
+};
+
+//事件弹框
+const visibleEvent = ref(false);
+const eventFormRef = ref(null);
+//事件表单
+const formEvent = ref({
+  trigger: null,
+  action: null,
+});
+//事件列表
+const eventList = ref([
+  {
+    trigger: "对话开始",
+    action: "",
+    visible: false,
+  },
+  {
+    trigger: "对话结束",
+    action: "",
+    visible: false,
+  },
+]);
+//触发器列表
+const triggerList = ref([
+  {
+    id: 1,
+    name: "对话开始",
+  },
+  {
+    id: 2,
+    name: "对话结束",
+  },
+]);
+//动作列表
+const actionList = ref([]);
+
+//添加内容
+const addEvent = () => {
+  eventFormRef.value.validate((valid) => {
+    if (valid) {
+      eventList.value.push(formEvent.value);
+      visibleEvent.value = false;
+      //清空表单
+      formEvent.value = {
+        trigger: null,
+        action: null,
+      };
+    } else {
+      console.log("error");
+    }
+  });
+};
+//编辑内容
+const handleEditEvent = (item) => {
+  item.visible = false;
+};
+//删除内容
+const deleteEvent = (index) => {
+
+  eventList.value.splice(index, 1);
 };
 </script>
 
@@ -449,18 +667,23 @@ const deleteContent = (index) => {
   padding: 10px;
   border-bottom: 1px solid #000;
   /* 固定在顶部栏 */
-  // position: fixed;
-  // width: 100%;
+  position: fixed;
+  width: 100%;
 }
 .attribute {
   padding: 40px 0;
   color: #fff;
+  .card {
+    border-bottom: 1px solid #333;
+    padding: 0 10px;
+  }
 }
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  height: 30px;
+  padding: 20px;
 }
 .btn-group {
   // display: flex;
