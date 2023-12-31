@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-31 16:27:40
+ * @LastEditTime: 2023-12-31 23:38:04
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -328,11 +328,7 @@
                 >添加</el-button
               >
             </template>
-            <el-form
-              ref="eventFormRef"
-              :model="formEvent"
-              label-width="80px"
-            >
+            <el-form ref="eventFormRef" :model="formEvent" label-width="80px">
               <el-form-item label="触发器" prop="trigger">
                 <el-select v-model="formEvent.trigger" placeholder="请选择">
                   <el-option
@@ -538,7 +534,6 @@ const rulesCotent = {
   ],
 };
 const handleAvatarSuccess = (res) => {
-  console.log(res);
   formValue.imageUrl = res.url;
 };
 const beforeAvatarUpload = (file) => {
@@ -553,7 +548,6 @@ const beforeAvatarUpload = (file) => {
 };
 //添加人物
 const addPerson = () => {
-  console.log("addPerson");
   ruleFormRef.value.validate((valid) => {
     if (valid) {
       personList.value.push(formValue.value);
@@ -574,7 +568,7 @@ const handleEdit = (item) => {
 };
 //删除人物
 const deletePerson = (index) => {
-  console.log("deletePerson");
+
   personList.value.splice(index, 1);
 };
 //添加内容
@@ -599,7 +593,7 @@ const handleEditContent = (item) => {
 };
 //删除内容
 const deleteContent = (index) => {
-  console.log("deletePerson");
+
   contentList.value.splice(index, 1);
 };
 
@@ -660,7 +654,7 @@ const handleEditEvent = (item) => {
 };
 //删除内容
 const deleteEvent = (index) => {
-  console.log("deletePerson");
+
   eventList.value.splice(index, 1);
 };
 </script>

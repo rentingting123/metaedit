@@ -381,7 +381,6 @@ const handleEditEvent = (item) => {
 };
 //删除内容
 const deleteEvent = (index) => {
-  console.log("deletePerson");
   eventList.value.splice(index, 1);
 };
 </script>
