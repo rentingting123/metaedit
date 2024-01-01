@@ -9,17 +9,31 @@
 <template>
   <q-page class="flex flex-center">
 
-    111
+    <div class="gm-view" ref="gm"/>
   </q-page>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
 
-export default defineComponent({
-  name: "IndexPage",
-  components: {
-    // PixelStreaming,
-  },
+const gm = ref(null);
+
+
+onMounted(_=>{
+
+  let container = gm.value;
+  console.log(gm.value);
+
 });
+
+
 </script>
+
+<style>
+
+.gm-view{
+  max-height: 90vh;
+  min-width: 300px;
+  background: #fff;
+}
+</style>

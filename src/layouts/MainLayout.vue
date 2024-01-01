@@ -25,7 +25,7 @@
           </q-menu>
         </div>
 
-        <!-- <div class="q-ml-md cursor-pointer non-selectable">
+    <div class="q-ml-md cursor-pointer non-selectable">
           添加
           <q-menu
             auto-close
@@ -94,7 +94,7 @@
               </q-item>
             </q-list>
           </q-menu>
-        </div> -->
+        </div>
 
         <q-space />
         <q-btn flat color="primary" label="运行" @click="handleRun" />
@@ -179,11 +179,13 @@
       </template>
     </el-dialog>
     <q-page-container>
-      {{ sceneIndex }}
+
+      <!-- {{ sceneIndex }}
       {{ objectsIndex }}
       {{ curType }}
       <br />
-      {{ default_project }}
+      {{ default_project }} -->
+
       <router-view />
     </q-page-container>
   </q-layout>
@@ -203,7 +205,12 @@ import Button from "./components/right/button.vue";
 import ButtonGroup from "./components/right/buttonGroup.vue";
 import Audio from "./components/right/audio.vue";
 
-import { selectFile, openFile, openAndReadFile, saveFile } from "../api";
+
+import { useEditStore } from "stores/edit";
+
+const edit = useEditStore();
+console.log(edit);
+
 const leftDrawerOpen = ref(false);
 const rightDrawerOpen = ref(true);
 const toggleLeftDrawer = (eventName) => {
@@ -223,10 +230,12 @@ const default_project = ref({
   name: "我的项目",
   rootPath: "/Users/admin", //地址
 });
+
 const formProject = ref({
   name: "我的项目",
   rootPath: "/Users/admin",
 });
+
 // 新建弹窗
 const dialogProject = ref(false);
 // 弹框表单
@@ -244,11 +253,12 @@ const rules = {
 const selectFilePath = async () => {
   // openFile 该方法只返回文件路径，适用于打开文件。
   //打开并读取，返回文件内容。openAndReadFile
-  let rel = await openFile();
+  let rel = await edit.selectDir();
+
   //打开成功
   if (rel) {
     console.log("文件路径:", rel.filePath);
-    console.log("文件内容:", rel.data.toString());
+    // console.log("文件内容:", rel.data.toString());
     formProject.value.rootPath = rel.filePath;
   } else {
     //用户取消，什么都不做。
@@ -271,7 +281,9 @@ const viewOpenFile = async () => {
   // openFile 该方法只返回文件路径，适用于打开文件。
 
   //打开并读取，返回文件内容。openAndReadFile
-  let rel = await openFile();
+  // let rel = await openFile();
+  let rel = await edit.openFile();
+
   //打开成功
   if (rel) {
     console.log("文件路径:", rel.filePath);

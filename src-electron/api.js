@@ -13,6 +13,15 @@ export const fileUtils = {
       filePath = filePaths[0]
     return { filePath}
   },
+  selectDir: async _=> {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+      properties: ['openDirectory']
+    })
+    let filePath = ''
+    if (!canceled)
+      filePath = filePaths[0]
+    return { filePath}
+  },
   /**
    * 打开文件，并读取文件的text
    * @returns 读取到的text文件
@@ -65,7 +74,8 @@ export const fileUtils = {
 
 export  function setup(mainWindow){
 
-  ipcMain.handle('dialog@openFile', fileUtils.openFile);
-  ipcMain.handle('dialog@saveFile', fileUtils.saveFile);
-  ipcMain.handle('dialog@selectFile', fileUtils.selectFile);
+  ipcMain.handle('dialog:openFile', fileUtils.openFile);
+  ipcMain.handle('dialog:saveFile', fileUtils.saveFile);
+  ipcMain.handle('dialog:selectFile', fileUtils.selectFile);
+  ipcMain.handle('dialog:selectDir', fileUtils.selectDir);
 }

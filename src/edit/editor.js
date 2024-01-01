@@ -11,9 +11,7 @@ class Editor {
     // key = name , v = scene
     this.scenes = new Map;
     this.currentScene = null;
-
     this.app = app;
-
 
   }
 
