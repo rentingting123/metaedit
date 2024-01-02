@@ -1,12 +1,8 @@
 import { defineStore } from "pinia";
-import { useProjectStore } from "./project";
-import { watch, ref } from "vue";
+import { ref } from "vue";
 export const useSceneStore = defineStore("Scene", () => {
-  const project = useProjectStore();
-  const default_project = project.projectList[0]; //目前先去第一条，后期看需求
-  console.log(default_project, "default_project");
-  let scenesList = default_project.scenes;
-
+  //项目列表
+  const projectList = ref([]);
   const sceneIndex = ref(0); //场景当前选中
   const main = ref(0); //主场景
   const renameSceneIpt = ref(""); //当前编辑的场景名字
@@ -14,21 +10,23 @@ export const useSceneStore = defineStore("Scene", () => {
 
   //添加场景
   const addScene = () => {
-    const i = scenesList.findIndex(
-      (item) => item.name === "场景" + (scenesList.length + 1)
+    const i = projectList.value[0]?.scenes.findIndex(
+      (item) => item.name === "场景" + (projectList.value[0]?.scenes.length + 1)
     );
-    console.log(i);
     if (i !== -1) {
-      const lastChar = scenesList[i].name[scenesList[i].name.length - 1];
-      scenesList.push({
+      const lastChar =
+        projectList.value[0]?.scenes[i].name[
+          projectList.value[0]?.scenes[i].name.length - 1
+        ];
+      projectList.value[0]?.scenes.push({
         name: "场景" + (Number(lastChar) + 1),
         objects: [], //图层
         path: "",
         direction: null,
       });
     } else {
-      scenesList.push({
-        name: "场景" + (scenesList.length + 1),
+      projectList.value[0]?.scenes.push({
+        name: "场景" + (projectList.value[0]?.scenes.length + 1),
         objects: [], //图层
         path: "",
         direction: null,
@@ -83,26 +81,30 @@ export const useSceneStore = defineStore("Scene", () => {
   const handleAddSceneType = (type, index) => {
     //找出  objectsType 的type 等于 type
     const i = objectsType.value.find((item) => item.type === type);
-    scenesList[index].objects.push({
+    projectList.value[0]?.scenes[index].objects.push({
       ...i,
-      name: i.name + (scenesList[index].objects.length + 1),
+      name: i.name + (projectList.value[0]?.scenes[index].objects.length + 1),
     });
   };
   //创建副本
   const copyCreate = (item) => {
     //动态添加name 不重复
-    const i = scenesList.findIndex(
-      (item) => item.name === "场景 副本" + (scenesList.length + 1)
+    const i = projectList.value[0]?.scenes.findIndex(
+      (item) =>
+        item.name === "场景 副本" + (projectList.value[0]?.scenes.length + 1)
     );
     if (i !== -1) {
-      const lastChar = scenesList[i].name[scenesList[i].name.length - 1];
-      scenesList.push({
+      const lastChar =
+        projectList.value[0]?.scenes[i].name[
+          projectList.value[0]?.scenes[i].name.length - 1
+        ];
+      projectList.value[0]?.scenes.push({
         name: "场景 副本" + (Number(lastChar) + 1),
         objects: [], //图层
       });
     } else {
-      scenesList.push({
-        name: "场景 副本" + (scenesList.length + 1),
+      projectList.value[0]?.scenes.push({
+        name: "场景 副本" + (projectList.value[0]?.scenes.length + 1),
         objects: [], //图层
       });
     }
@@ -114,17 +116,16 @@ export const useSceneStore = defineStore("Scene", () => {
   };
   //场景删除
   const deleteScene = (index) => {
-    scenesList.splice(index, 1);
+    projectList.value[0]?.scenes.splice(index, 1);
   };
   //设置为启动场景
   const setSceneStart = (index, name) => {
     main.value = index;
-    default_project.main = name;
+    projectList.value[0].main = name;
   };
 
   return {
-    default_project,
-    scenesList,
+    projectList,
     sceneIndex,
     main,
     renameSceneIpt,

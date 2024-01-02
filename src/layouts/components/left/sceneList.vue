@@ -171,7 +171,7 @@ import { useSceneStore } from "stores/scene";
 const scene = useSceneStore();
 
 //向外抛出的事件列表
-const sceneList = scene.scenesList;
+const sceneList = scene.projectList[0].scenes;
 // 一级场景点击
 const handleSceneClick = (index) => {
   scene.sceneIndex = index;

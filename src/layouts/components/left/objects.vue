@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-31 19:28:41
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2024-01-02 15:31:22
+ * @LastEditTime: 2024-01-02 17:05:45
  * @FilePath: /code/metaedit/src/layouts/components/objects.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,10 +12,12 @@
       <div class="color-tx1">图层</div>
     </div>
     <div class="side-list">
+      {{}}
       <!-- 图层列表 -->
       <div
         class="side-item color-tx1"
-        v-for="(item, index) in objects"
+        v-for="(item, index) in scene.projectList[0].scenes[scene.sceneIndex]
+          .objects"
         :key="index"
         :class="{ active: objectsIndex === index }"
         @click="handleObjectsClick(item.type, index)"
@@ -48,8 +50,9 @@
 import { ref } from "vue";
 import { useSceneStore } from "stores/scene";
 const scene = useSceneStore();
+console.log(scene, 565656);
+import { storeToRefs } from "pinia";
 // 场景
-const objects = scene.scenesList[scene.sceneIndex].objects;
 
 const objectsIndex = ref(); //图层当前选中
 //向外抛出的事件列表
@@ -60,7 +63,7 @@ const handleObjectsClick = (type, index) => {
 };
 //二级 层级删除
 const deleteObjects = (index) => {
-  objects.splice(index, 1);
+  scene.projectList[0].scenes[scene.sceneIndex].objects.splice(index, 1);
 };
 </script>
 <style lang="scss" scoped>

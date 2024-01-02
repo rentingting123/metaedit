@@ -28,10 +28,10 @@
 
 <script setup >
 import { ref } from "vue";
-import { useProjectStore } from "stores/project";
+import { useSceneStore } from "stores/scene";
 import { useEditStore } from "stores/edit";
 const edit = useEditStore(); //编辑
-const project = useProjectStore(); // 场景
+const scene = useSceneStore(); // 场景
 
 // 弹框表单
 // 新建弹窗
@@ -54,6 +54,8 @@ const formProject = ref({
     {
       name: "场景1",
       objects: [],
+      path: "", //脚本
+      direction: null, //方向
     },
   ],
   main: "场景1",
@@ -87,8 +89,7 @@ const selectFilePath = async () => {
 const submitForm = async () => {
   await projectRef.value.validate((valid, fields) => {
     if (valid) {
-      console.log("success submit!", formProject.value);
-      project.addProject(formProject.value);
+      scene.projectList.push(formProject.value);
       close();
     } else {
       console.log("error submit!", fields);
