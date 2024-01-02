@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-31 19:28:41
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-31 23:37:47
+ * @LastEditTime: 2024-01-02 15:31:22
  * @FilePath: /code/metaedit/src/layouts/components/objects.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -46,27 +46,21 @@
 
 <script setup >
 import { ref } from "vue";
-// props 接收 objects
-
+import { useSceneStore } from "stores/scene";
+const scene = useSceneStore();
 // 场景
-const props = defineProps({
-  objects: {
-    //列表数据
-    type: Array,
-    default: () => [],
-  },
-});
+const objects = scene.scenesList[scene.sceneIndex].objects;
+
 const objectsIndex = ref(); //图层当前选中
 //向外抛出的事件列表
-const emit = defineEmits(["handleObjectsClick"]);
 // 二级 图层点击
 const handleObjectsClick = (type, index) => {
   objectsIndex.value = index;
-  emit("handleObjectsClick", type, index);
+  scene.curType = type;
 };
 //二级 层级删除
 const deleteObjects = (index) => {
-  props.objects.splice(index, 1);
+  objects.splice(index, 1);
 };
 </script>
 <style lang="scss" scoped>

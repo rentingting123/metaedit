@@ -1,15 +1,7 @@
 import { defineStore } from 'pinia';
 import { selectFile, openFile, selectDir, saveFile } from "../api";
 
-const levelType = {
-  video: "视频",
-  frame: "序列帧",
-  photo: "图片",
-  dialog: "对话",
-  button: "按钮",
-  buttonGroup: "按钮组",
-  audio: "声音",
-};
+
 
 export const useEditStore = defineStore('edit', {
   state: () => ({

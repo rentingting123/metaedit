@@ -1,9 +1,15 @@
 <template>
   <div class="content">
-    <div class="scene color-bg2" v-if="!showSearchScene">
+    <div class="scene color-bg2">
       <div class="color-tx1">场景</div>
       <div>
-        <q-btn flat color="primary" label="添加" @click="addScene" dense />
+        <q-btn
+          flat
+          color="primary"
+          label="添加"
+          @click="scene.addScene"
+          dense
+        />
       </div>
     </div>
 
@@ -13,20 +19,20 @@
         class="side-item color-tx1"
         v-for="(item, index) in sceneList"
         :key="index"
-        :class="{ active: sceneIndex === index }"
+        :class="{ active: scene.sceneIndex === index }"
         @click="handleSceneClick(index)"
       >
         <span>
           <q-icon
-            v-if="index === mainScene"
+            v-if="index === scene.main"
             name="bi-layout-wtf"
             class="iconstyle"
           />
-          <span v-if="index === renameSceneIpt">
+          <span v-if="index === scene.renameSceneIpt">
             <el-input
               v-model="item.name"
               style="width: 100px"
-              @blur="renameSceneIpt = ''"
+              @blur="scene.renameSceneIpt = ''"
           /></span>
           <span v-else>{{ item.name }}</span>
         </span>
@@ -50,7 +56,7 @@
                   <q-list dense style="min-width: 100px">
                     <q-item
                       clickable
-                      @click="handleAddSceneType('video', index)"
+                      @click="scene.handleAddSceneType('video', index)"
                     >
                       <q-item-section>
                         <div>
@@ -63,7 +69,7 @@
                     </q-item>
                     <q-item
                       clickable
-                      @click="handleAddSceneType('frame', index)"
+                      @click="scene.handleAddSceneType('frame', index)"
                     >
                       <q-item-section>
                         <div>
@@ -77,7 +83,7 @@
                     <q-separator />
                     <q-item
                       clickable
-                      @click="handleAddSceneType('photo', index)"
+                      @click="scene.handleAddSceneType('photo', index)"
                     >
                       <q-item-section>
                         <div>
@@ -87,7 +93,7 @@
                     </q-item>
                     <q-item
                       clickable
-                      @click="handleAddSceneType('dialog', index)"
+                      @click="scene.handleAddSceneType('dialog', index)"
                     >
                       <q-item-section
                         ><div>
@@ -97,7 +103,7 @@
                     </q-item>
                     <q-item
                       clickable
-                      @click="handleAddSceneType('button', index)"
+                      @click="scene.handleAddSceneType('button', index)"
                     >
                       <q-item-section
                         ><div>
@@ -107,7 +113,7 @@
                     </q-item>
                     <q-item
                       clickable
-                      @click="handleAddSceneType('buttonGroup', index)"
+                      @click="scene.handleAddSceneType('buttonGroup', index)"
                     >
                       <q-item-section
                         ><div>
@@ -118,7 +124,7 @@
                     <q-separator />
                     <q-item
                       clickable
-                      @click="handleAddSceneType('audio', index)"
+                      @click="scene.handleAddSceneType('audio', index)"
                     >
                       <q-item-section
                         ><div>
@@ -130,23 +136,23 @@
                 </q-menu>
               </q-item>
               <q-item v-close-popup clickable>
-                <q-item-section @click="copyCreate(item)"
+                <q-item-section @click="scene.copyCreate(item)"
                   >创建副本
                 </q-item-section>
               </q-item>
               <q-item v-close-popup clickable>
-                <q-item-section @click="renameScene(index)"
+                <q-item-section @click="scene.renameScene(index)"
                   >重命名</q-item-section
                 >
               </q-item>
               <q-separator />
               <q-item v-close-popup clickable v-if="sceneList.length > 1">
-                <q-item-section @click="deleteScene(index)"
+                <q-item-section @click="scene.deleteScene(index)"
                   >删除</q-item-section
                 >
               </q-item>
               <q-item clickable v-close-popup>
-                <q-item-section @click="setSceneStart(index, item.name)"
+                <q-item-section @click="scene.setSceneStart(index, item.name)"
                   >设置为启动场景</q-item-section
                 >
               </q-item>
@@ -155,162 +161,22 @@
         </div>
       </div>
     </div>
-    <!-- {{ sceneList }} -->
   </div>
 </template>
 
 <script setup >
 import { watch, ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useSceneStore } from "stores/scene";
+const scene = useSceneStore();
+
 //向外抛出的事件列表
-const emit = defineEmits(["handleSceneList", "handleMain", "handleSceneIndex"]);
-// 场景
-const showSearchScene = ref(false); //场景
-const sceneIndex = ref(0); //场景当前选中
-const sceneList = ref([
-  {
-    name: "场景1",
-    objects: [], //图层
-  },
-]);
-//主场景
-const mainScene = ref(0);
-const renameSceneIpt = ref(""); //当前编辑的场景名字
-const levelType = ref({
-  video: "视频",
-  frame: "序列帧",
-  photo: "图片",
-  dialog: "对话",
-  button: "按钮",
-  buttonGroup: "按钮组",
-  audio: "声音",
-});
-
-const objectsType = ref([
-  {
-    name: "视频",
-    type: "video",
-    visible: true,
-    other: {},
-  },
-  {
-    name: "序列帧",
-    type: "frame",
-    visible: true,
-    other: {},
-  },
-  {
-    name: "图片",
-    type: "photo",
-    visible: true,
-    other: {},
-  },
-  {
-    name: "对话",
-    type: "dialog",
-    visible: true,
-    other: {},
-  },
-  {
-    name: "按钮",
-    type: "button",
-    visible: true,
-    other: {},
-  },
-  {
-    name: "按钮组",
-    type: "buttonGroup",
-    visible: true,
-    other: {},
-  },
-  {
-    name: "声音",
-    type: "audio",
-    visible: true,
-    other: {},
-  },
-]);
-const addScene = () => {
-  //给sceneList 追加
-  /* sceneList.value 中的name 是否
-    等于 输入的值  如果等于 则不添加
-    否则添加
-    */
-  const i = sceneList.value.findIndex(
-    (item) => item.name === "场景" + (sceneList.value.length + 1)
-  );
-  if (i !== -1) {
-    const lastChar =
-      sceneList.value[i].name[sceneList.value[i].name.length - 1];
-    sceneList.value.push({
-      name: "场景" + (Number(lastChar) + 1),
-      objects: [], //图层
-      path: "",
-      direction: null,
-    });
-  } else {
-    sceneList.value.push({
-      name: "场景" + (sceneList.value.length + 1),
-      objects: [], //图层
-      path: "",
-      direction: null,
-    });
-  }
-};
-
+const sceneList = scene.scenesList;
 // 一级场景点击
 const handleSceneClick = (index) => {
-  sceneIndex.value = index;
-  emit("handleSceneIndex", index, "scene");
+  scene.sceneIndex = index;
+  scene.curType = "scene";
 };
-//场景删除
-const deleteScene = (index) => {
-  sceneList.value.splice(index, 1);
-};
-//添加场景类型
-const handleAddSceneType = (type, index) => {
-  //找出  objectsType 的type 等于 type
-  const i = objectsType.value.find((item) => item.type === type);
-  sceneList.value[index].objects.push({
-    ...i,
-    name: i.name + (sceneList.value[index].objects.length + 1),
-  });
-};
-//设置场景
-const setSceneStart = (index, name) => {
-  mainScene.value = index;
-  // 场景发生变化就提交给父组件
-  emit("handleMain", name);
-};
-//重命名
-const renameScene = (index) => {
-  //深度克隆
-  renameSceneIpt.value = index;
-};
-//创建副本
-const copyCreate = (item) => {
-  //动态添加name 不重复
-  const i = sceneList.value.findIndex(
-    (item) => item.name === "场景 副本" + (sceneList.value.length + 1)
-  );
-  if (i !== -1) {
-    const lastChar =
-      sceneList.value[i].name[sceneList.value[i].name.length - 1];
-    sceneList.value.push({
-      name: "场景 副本" + (Number(lastChar) + 1),
-      objects: [], //图层
-    });
-  } else {
-    sceneList.value.push({
-      name: "场景 副本" + (sceneList.value.length + 1),
-      objects: [], //图层
-    });
-  }
-};
-//sceneList 发生变化就提交给父组件
-watch(sceneList.value, (newVal, oldVal) => {
-  // 场景发生变化就提交给父组件
-  emit("handleSceneList", newVal);
-});
 </script>
 <style lang="scss" scoped>
 .side-list {
