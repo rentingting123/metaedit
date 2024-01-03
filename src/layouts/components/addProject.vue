@@ -53,9 +53,10 @@ const formProject = ref({
   scenes: [
     {
       name: "场景1",
-      objects: [],
-      path: "", //脚本
-      direction: null, //方向
+      objects: [], //图层
+      path: "", //图层属性 脚本
+      direction: null, //图层属性 方向
+      eventList: [], //事件列表
     },
   ],
   main: "场景1",

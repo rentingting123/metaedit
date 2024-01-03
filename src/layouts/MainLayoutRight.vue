@@ -1,3 +1,11 @@
+<!--
+ * @Author: rentingting 1542078062@qq.com
+ * @Date: 2024-01-02 13:53:11
+ * @LastEditors: rentingting 1542078062@qq.com
+ * @LastEditTime: 2024-01-03 09:45:56
+ * @FilePath: /code/metaedit/src/layouts/MainLayoutRight.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <q-drawer
     v-model="rightDrawerOpen"
@@ -7,9 +15,7 @@
     class="color-bg2"
     side="right"
   >
-    {{ scene.curType }}
     <Scene v-if="scene.curType == 'scene'"></Scene>
-    <!--  :data="default_project.sceneList[sceneIndex]" -->
     <Video v-if="scene.curType == 'video'"></Video>
     <Frame v-if="scene.curType == 'frame'"></Frame>
     <Photo v-if="scene.curType == 'photo'"></Photo>

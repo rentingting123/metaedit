@@ -21,16 +21,20 @@ export const useSceneStore = defineStore("Scene", () => {
       projectList.value[0]?.scenes.push({
         name: "场景" + (Number(lastChar) + 1),
         objects: [], //图层
-        path: "",
-        direction: null,
+        path: "", //图层属性 脚本
+        direction: null, //图层属性 方向
+        eventList: [], //事件列表
       });
     } else {
-      projectList.value[0]?.scenes.push({
+      let obj = {
         name: "场景" + (projectList.value[0]?.scenes.length + 1),
         objects: [], //图层
-        path: "",
-        direction: null,
-      });
+        path: "", //图层属性 脚本
+        direction: null, //图层属性 方向
+        eventList: [], //事件列表
+      };
+      console.log(obj, 222);
+      projectList.value[0]?.scenes.push(obj);
     }
   };
   const objectsType = ref([

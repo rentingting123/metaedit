@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-31 23:43:28
+ * @LastEditTime: 2024-01-03 10:20:36
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,31 +10,54 @@
   <div>
     <!-- 公共属性-->
     <!-- 视频 -->
-    {{ props.others }}
+
     <div class="scene color-bg2">
       <div class="color-tx1">属性</div>
     </div>
     <div class="attribute">
+      <!-- {{ scene.projectList[0].scenes }} -->
       <!-- 属性 -->
-      <el-form label-position="right" label-width="60px" :model="props.data">
+      <el-form
+        label-position="right"
+        label-width="50px"
+        :model="scene.projectList[0].scenes[scene.sceneIndex]"
+      >
         <div class="card">
           <div class="card-header">
             <span class="color-tx1">基础</span>
           </div>
+          <!-- {{ scene.projectList[0].scenes[scene.sceneIndex] }} -->
           <el-form-item label="类型">
             <div>场景</div>
           </el-form-item>
           <el-form-item label="name">
-            <el-input v-model="props.data.name" size="small" />
+            <el-input
+              v-model="scene.projectList[0].scenes[scene.sceneIndex].name"
+              size="small"
+            />
           </el-form-item>
         </div>
         <div class="card">
           <div class="card-header"></div>
           <el-form-item label="脚本">
-            <el-input v-model="props.data.path" size="small" />
+            <el-input
+              v-model="scene.projectList[0].scenes[scene.sceneIndex].path"
+              size="small"
+              style="width: 80%; margin-right: 10px"
+            />
+            <q-icon
+              style="color: #ccc; font-size: 1.4em"
+              name="bi-files"
+              @click="selectFilePath"
+            ></q-icon>
           </el-form-item>
           <el-form-item label="方向" prop="name">
-            <el-select v-model="props.data.direction" placeholder="请选择">
+            <el-select
+              v-model="scene.projectList[0].scenes[scene.sceneIndex].direction"
+              placeholder="请选择"
+              size="small"
+              style="width: 100%"
+            >
               <el-option
                 v-for="item in directionList"
                 :key="item.name"
@@ -105,10 +128,16 @@
           </el-popover>
         </div>
         <div class="card-body">
-          <tempalte v-if="eventList.length > 0">
+          <tempalte
+            v-if="
+              scene.projectList[0].scenes[scene.sceneIndex].eventList.length > 0
+            "
+          >
             <div
               class="card-body-item"
-              v-for="(item, index) in eventList"
+              v-for="(item, index) in scene.projectList[0].scenes[
+                scene.sceneIndex
+              ].eventList"
               :key="index"
             >
               <span class="card-body-item-name">
@@ -189,7 +218,11 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { watch, ref } from "vue";
+import { useSceneStore } from "stores/scene";
+import { useEditStore } from "stores/edit";
+const edit = useEditStore(); //编辑
+const scene = useSceneStore();
 
 // 场景
 const props = defineProps({
@@ -237,19 +270,19 @@ const rulesEvent = {
     },
   ],
 };
-//事件列表
-const eventList = ref([
-  {
-    trigger: "进入",
-    action: "",
-    visible: false,
-  },
-  {
-    trigger: "离开",
-    action: "",
-    visible: false,
-  },
-]);
+
+// ref([
+//   {
+//     trigger: "进入",
+//     action: "",
+//     visible: false,
+//   },
+//   {
+//     trigger: "离开",
+//     action: "",
+//     visible: false,
+//   },
+// ]);
 //触发器列表
 const triggerList = ref([
   {
@@ -262,13 +295,15 @@ const triggerList = ref([
   },
 ]);
 //动作列表
-const actionList = ref([]);
+const actionList = scene.projectList[0].scenes;
 
 //添加内容
 const addEvent = () => {
   eventFormRef.value.validate((valid) => {
     if (valid) {
-      eventList.value.push(formEvent.value);
+      scene.projectList[0].scenes[scene.sceneIndex].eventList.push(
+        formEvent.value
+      );
       visibleEvent.value = false;
       //清空表单
       formEvent.value = {
@@ -286,7 +321,22 @@ const handleEditEvent = (item) => {
 };
 //删除内容
 const deleteEvent = (index) => {
-  eventList.value.splice(index, 1);
+  scene.projectList[0].scenes[scene.sceneIndex].eventList.splice(index, 1);
+};
+//保存路径
+const selectFilePath = async () => {
+  // openFile 该方法只返回文件路径，适用于打开文件。
+  //打开并读取，返回文件内容。openAndReadFile
+  let rel = await edit.selectDir();
+
+  //打开成功
+  if (rel) {
+    console.log("文件路径:", rel.filePath);
+    // console.log("文件内容:", rel.data.toString());
+    scene.projectList[0].scenes[scene.sceneIndex].path = rel.filePath;
+  } else {
+    //用户取消，什么都不做。
+  }
 };
 </script>
 
