@@ -59,7 +59,17 @@ export const useSceneStore = defineStore("Scene", () => {
       name: "序列帧",
       type: "frame",
       visible: true,
-      other: {},
+      path: "", //路径（文件选择）
+      loop: false, //循环（复选框）：勾选上视频会自动循环。
+      autoplay: false, //自动播放（复选框）：勾选上后，视频会自动播放。
+      layout: {
+        name: "拉伸",
+        up: 1,
+        down: 1,
+        left: 1,
+        right: 1,
+      },
+      eventList: [], //事件列表
     },
     {
       name: "图片",
@@ -89,7 +99,17 @@ export const useSceneStore = defineStore("Scene", () => {
       name: "声音",
       type: "audio",
       visible: true,
-      other: {},
+      path: "", //路径（文件选择）
+      loop: false, //循环（复选框）：勾选上视频会自动循环。
+      autoplay: false, //自动播放（复选框）：勾选上后，视频会自动播放。
+      layout: {
+        name: "拉伸",
+        up: 1,
+        down: 1,
+        left: 1,
+        right: 1,
+      },
+      eventList: [], //事件列表
     },
   ]);
   //添加场景类型
