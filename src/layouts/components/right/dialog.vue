@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2024-01-03 11:39:44
+ * @LastEditTime: 2024-01-03 12:11:44
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -627,11 +627,9 @@ const eventList = ref([
 //触发器列表
 const triggerList = ref([
   {
-    id: 1,
     name: "对话开始",
   },
   {
-    id: 2,
     name: "对话结束",
   },
 ]);
@@ -660,7 +658,6 @@ const handleEditEvent = (item) => {
 };
 //删除内容
 const deleteEvent = (index) => {
-
   eventList.value.splice(index, 1);
 };
 </script>
