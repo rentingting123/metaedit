@@ -75,7 +75,16 @@ export const useSceneStore = defineStore("Scene", () => {
       name: "图片",
       type: "photo",
       visible: true,
-      other: {},
+      path: "", //路径（文件选择）：显示文件路径，点击按钮可以重新选择。
+      loop: false, //循环（复选框）：勾选上，视频会自动循环。
+      autoplay: false, //自动播放（复选框）：勾选上后，视频会自动播放。
+      layout: {
+        name: "拉伸",
+        up: 1,
+        down: 1,
+        left: 1,
+        right: 1,
+      },
     },
     {
       name: "对话",

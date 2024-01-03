@@ -275,6 +275,12 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { useSceneStore } from "stores/scene";
+import { useEditStore } from "stores/edit";
+const edit = useEditStore(); //编辑
+const scene = useSceneStore();
+
+
 const btnGroupFormRef = ref(null);
 const visibleBtnGroup = ref(false);
 const formValue6 = ref({
