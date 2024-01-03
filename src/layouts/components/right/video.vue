@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2024-01-03 11:11:57
+ * @LastEditTime: 2024-01-03 11:20:34
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -28,7 +28,11 @@
           <div class="card-header">
             <span class="color-tx1">基础</span>
           </div>
-          <!-- {{ scene.projectList[0].scenes[scene.sceneIndex].objects }} -->
+          <!-- {{
+            scene.projectList[0].scenes[scene.sceneIndex].objects[
+              scene.objectsIndex
+            ].eventList
+          }} -->
           <el-form-item label="类型">
             <div>视频</div>
           </el-form-item>
@@ -371,18 +375,7 @@ const rulesEvent = {
   ],
 };
 //事件列表
-// const eventList = ref([
-//   {
-//     trigger: "播放开始",
-//     action: "",
-//     visible: false,
-//   },
-//   {
-//     trigger: "播放结束",
-//     action: "",
-//     visible: false,
-//   },
-// ]);
+
 //触发器列表
 const triggerList = ref([
   {
@@ -395,16 +388,17 @@ const triggerList = ref([
   },
 ]);
 //动作列表
-const objects = scene.projectList[0].scenes[scene.sceneIndex].objects;
+const arr = scene.projectList[0].scenes[scene.sceneIndex].objects;
 //过滤出
-const actionList = objects.length
-  ? objects.filter((item) => item.type === "video")
+const actionList = arr.length
+  ? arr.filter((item) => item.type === "video")
   : [];
 
 //添加内容
 const addEvent = () => {
   eventFormRef.value.validate((valid) => {
     if (valid) {
+      console.log(scene.objectsIndex, "scene.objectsIndex");
       scene.projectList[0].scenes[scene.sceneIndex].objects[
         scene.objectsIndex
       ].eventList.push(formEvent.value);
