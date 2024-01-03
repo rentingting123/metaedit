@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2024-01-02 13:53:11
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2024-01-03 09:45:56
+ * @LastEditTime: 2024-01-03 10:39:14
  * @FilePath: /code/metaedit/src/layouts/MainLayoutRight.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,7 +23,6 @@
     <Button v-if="scene.curType == 'button'"></Button>
     <ButtonGroup v-if="scene.curType == 'buttonGroup'"></ButtonGroup>
     <Audio v-if="scene.curType == 'audio'"></Audio>
-    <!--  :data="default_project.sceneList[sceneIndex].objects[objectsIndex]" -->
   </q-drawer>
 </template>
 

@@ -2,7 +2,7 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-31 19:28:41
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2024-01-02 17:05:45
+ * @LastEditTime: 2024-01-03 10:40:53
  * @FilePath: /code/metaedit/src/layouts/components/objects.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,7 +19,7 @@
         v-for="(item, index) in scene.projectList[0].scenes[scene.sceneIndex]
           .objects"
         :key="index"
-        :class="{ active: objectsIndex === index }"
+        :class="{ active: scene.objectsIndex === index }"
         @click="handleObjectsClick(item.type, index)"
       >
         <span>
@@ -54,11 +54,10 @@ console.log(scene, 565656);
 import { storeToRefs } from "pinia";
 // 场景
 
-const objectsIndex = ref(); //图层当前选中
 //向外抛出的事件列表
 // 二级 图层点击
 const handleObjectsClick = (type, index) => {
-  objectsIndex.value = index;
+  scene.objectsIndex = index;
   scene.curType = type;
 };
 //二级 层级删除

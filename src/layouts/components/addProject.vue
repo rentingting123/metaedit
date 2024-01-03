@@ -8,7 +8,7 @@
         <el-input
           v-model="formProject.rootPath"
           autocomplete="off"
-          style="width: 90%; margin-right: 10px"
+          style="width: 80%; margin-right: 10px"
         />
         <q-icon
           style="color: #ccc; font-size: 1.4em"

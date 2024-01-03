@@ -2,29 +2,45 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2023-12-31 23:38:32
+ * @LastEditTime: 2024-01-03 11:11:57
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div>
-    <!-- 公共属性-->
     <!-- 视频 -->
     <div class="scene color-bg2">
       <div class="color-tx1">属性</div>
     </div>
+
     <div class="attribute">
       <!-- 视频属性 -->
-      <el-form label-position="right" label-width="60px" :model="formValue1">
+      <el-form
+        label-position="right"
+        label-width="60px"
+        :model="
+          scene.projectList[0].scenes[scene.sceneIndex].objects[
+            scene.objectsIndex
+          ]
+        "
+      >
         <div class="card">
           <div class="card-header">
             <span class="color-tx1">基础</span>
           </div>
+          <!-- {{ scene.projectList[0].scenes[scene.sceneIndex].objects }} -->
           <el-form-item label="类型">
             <div>视频</div>
           </el-form-item>
           <el-form-item label="name">
-            <el-input v-model="formValue1.name" size="small" />
+            <el-input
+              v-model="
+                scene.projectList[0].scenes[scene.sceneIndex].objects[
+                  scene.objectsIndex
+                ].name
+              "
+              size="small"
+            />
           </el-form-item>
         </div>
         <div class="card">
@@ -32,7 +48,20 @@
             <span class="color-tx1">资源</span>
           </div>
           <el-form-item label="路径">
-            <el-input v-model="formValue1.path" size="small" />
+            <el-input
+              v-model="
+                scene.projectList[0].scenes[scene.sceneIndex].objects[
+                  scene.objectsIndex
+                ].path
+              "
+              size="small"
+              style="width: 80%; margin-right: 10px"
+            />
+            <q-icon
+              style="color: #ccc; font-size: 1.4em"
+              name="bi-files"
+              @click="selectFilePath"
+            ></q-icon>
           </el-form-item>
         </div>
         <div class="card">
@@ -41,16 +70,20 @@
           </div>
           <el-form-item label="" label-width="20px">
             <el-select
-              v-model="formValue1.layout.id"
+              v-model="
+                scene.projectList[0].scenes[scene.sceneIndex].objects[
+                  scene.objectsIndex
+                ].layout.name
+              "
               class="m-2"
               placeholder="Select"
               size="small"
             >
               <el-option
                 v-for="item in layoutList"
-                :key="item.value"
+                :key="item.label"
                 :label="item.label"
-                :value="item.value"
+                :value="item.label"
               />
             </el-select>
           </el-form-item>
@@ -58,7 +91,11 @@
             <div>
               <span class="lable">上</span>
               <el-input-number
-                v-model="formValue1.layout.up"
+                v-model="
+                  scene.projectList[0].scenes[scene.sceneIndex].objects[
+                    scene.objectsIndex
+                  ].layout.up
+                "
                 :min="1"
                 :max="10"
                 size="small"
@@ -69,7 +106,11 @@
             <div>
               <span class="lable">下</span>
               <el-input-number
-                v-model="formValue1.layout.down"
+                v-model="
+                  scene.projectList[0].scenes[scene.sceneIndex].objects[
+                    scene.objectsIndex
+                  ].layout.down
+                "
                 :min="1"
                 :max="10"
                 size="small"
@@ -80,7 +121,11 @@
             <div>
               <span class="lable">左</span>
               <el-input-number
-                v-model="formValue1.layout.left"
+                v-model="
+                  scene.projectList[0].scenes[scene.sceneIndex].objects[
+                    scene.objectsIndex
+                  ].layout.left
+                "
                 :min="1"
                 :max="10"
                 size="small"
@@ -91,7 +136,11 @@
             <div>
               <span class="lable">右</span>
               <el-input-number
-                v-model="formValue1.layout.right"
+                v-model="
+                  scene.projectList[0].scenes[scene.sceneIndex].objects[
+                    scene.objectsIndex
+                  ].layout.right
+                "
                 :min="1"
                 :max="10"
                 size="small"
@@ -106,10 +155,24 @@
             <span class="color-tx1">控制</span>
           </div>
           <el-form-item label-width="20px">
-            <el-checkbox v-model="formValue1.autoplay" label="自动播放" />
+            <el-checkbox
+              v-model="
+                scene.projectList[0].scenes[scene.sceneIndex].objects[
+                  scene.objectsIndex
+                ].autoplay
+              "
+              label="自动播放"
+            />
           </el-form-item>
           <el-form-item label-width="20px">
-            <el-checkbox v-model="formValue1.loop" label="循环" />
+            <el-checkbox
+              v-model="
+                scene.projectList[0].scenes[scene.sceneIndex].objects[
+                  scene.objectsIndex
+                ].loop
+              "
+              label="循环"
+            />
           </el-form-item>
         </div>
       </el-form>
@@ -173,10 +236,18 @@
           </el-popover>
         </div>
         <div class="card-body">
-          <tempalte v-if="eventList.length > 0">
+          <tempalte
+            v-if="
+              scene.projectList[0].scenes[scene.sceneIndex].objects[
+                scene.objectsIndex
+              ].eventList.length > 0
+            "
+          >
             <div
               class="card-body-item"
-              v-for="(item, index) in eventList"
+              v-for="(item, index) in scene.projectList[0].scenes[
+                scene.sceneIndex
+              ].objects[scene.objectsIndex].eventList"
               :key="index"
             >
               <span class="card-body-item-name">
@@ -258,35 +329,23 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { useSceneStore } from "stores/scene";
+import { useEditStore } from "stores/edit";
+const edit = useEditStore(); //编辑
+const scene = useSceneStore();
+
 const layoutList = [
   {
-    value: 1,
     label: "拉伸",
   },
   {
-    value: 2,
     label: "缩放居中",
   },
   {
-    value: 3,
     label: "铺满居中",
   },
 ]; //平铺类型 可选项：拉伸、满铺、居中。
-//视频
-const formValue1 = ref({
-  type: "video",
-  name: "",
-  path: "", //路径（文件选择）：显示文件路径，点击按钮可以重新选择。
-  loop: false, //循环（复选框）：勾选上，视频会自动循环。
-  autoplay: false, //自动播放（复选框）：勾选上后，视频会自动播放。
-  layout: {
-    id: 1,
-    up: 1,
-    down: 1,
-    left: 1,
-    right: 1,
-  },
-});
+
 //事件弹框
 const visibleEvent = ref(false);
 const eventFormRef = ref(null);
@@ -312,37 +371,43 @@ const rulesEvent = {
   ],
 };
 //事件列表
-const eventList = ref([
-  {
-    trigger: "播放开始",
-    action: "",
-    visible: false,
-  },
-  {
-    trigger: "播放结束",
-    action: "",
-    visible: false,
-  },
-]);
+// const eventList = ref([
+//   {
+//     trigger: "播放开始",
+//     action: "",
+//     visible: false,
+//   },
+//   {
+//     trigger: "播放结束",
+//     action: "",
+//     visible: false,
+//   },
+// ]);
 //触发器列表
 const triggerList = ref([
   {
     id: 1,
-    name: "播放开始",
+    name: "开始播放",
   },
   {
     id: 2,
-    name: "播放结束",
+    name: "结束播放",
   },
 ]);
 //动作列表
-const actionList = ref([]);
+const objects = scene.projectList[0].scenes[scene.sceneIndex].objects;
+//过滤出
+const actionList = objects.length
+  ? objects.filter((item) => item.type === "video")
+  : [];
 
 //添加内容
 const addEvent = () => {
   eventFormRef.value.validate((valid) => {
     if (valid) {
-      eventList.value.push(formEvent.value);
+      scene.projectList[0].scenes[scene.sceneIndex].objects[
+        scene.objectsIndex
+      ].eventList.push(formEvent.value);
       visibleEvent.value = false;
       //清空表单
       formEvent.value = {
@@ -360,8 +425,26 @@ const handleEditEvent = (item) => {
 };
 //删除内容
 const deleteEvent = (index) => {
+  scene.projectList[0].scenes[scene.sceneIndex].objects[
+    scene.objectsIndex
+  ].eventList.splice(index, 1);
+};
+//保存路径
+const selectFilePath = async () => {
+  // openFile 该方法只返回文件路径，适用于打开文件。
+  //打开并读取，返回文件内容。openAndReadFile
+  let rel = await edit.selectDir();
 
-  eventList.value.splice(index, 1);
+  //打开成功
+  if (rel) {
+    console.log("文件路径:", rel.filePath);
+    // console.log("文件内容:", rel.data.toString());
+    scene.projectList[0].scenes[scene.sceneIndex].objects[
+      scene.objectsIndex
+    ].path = rel.filePath;
+  } else {
+    //用户取消，什么都不做。
+  }
 };
 </script>
 

@@ -4,6 +4,7 @@ export const useSceneStore = defineStore("Scene", () => {
   //项目列表
   const projectList = ref([]);
   const sceneIndex = ref(0); //场景当前选中
+  const objectsIndex = ref(); //图层当前选中
   const main = ref(0); //主场景
   const renameSceneIpt = ref(""); //当前编辑的场景名字
   const curType = ref("scene"); //当前显示的属性
@@ -42,7 +43,17 @@ export const useSceneStore = defineStore("Scene", () => {
       name: "视频",
       type: "video",
       visible: true,
-      other: {},
+      path: "", //路径（文件选择）
+      loop: false, //循环（复选框）：勾选上视频会自动循环。
+      autoplay: false, //自动播放（复选框）：勾选上后，视频会自动播放。
+      layout: {
+        name: "拉伸",
+        up: 1,
+        down: 1,
+        left: 1,
+        right: 1,
+      },
+      eventList: [], //事件列表
     },
     {
       name: "序列帧",
@@ -131,6 +142,7 @@ export const useSceneStore = defineStore("Scene", () => {
   return {
     projectList,
     sceneIndex,
+    objectsIndex,
     main,
     renameSceneIpt,
     curType,

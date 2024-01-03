@@ -2,15 +2,13 @@
  * @Author: rentingting 1542078062@qq.com
  * @Date: 2023-12-20 13:45:53
  * @LastEditors: rentingting 1542078062@qq.com
- * @LastEditTime: 2024-01-03 10:20:36
+ * @LastEditTime: 2024-01-03 10:25:56
  * @FilePath: /code/metaedit/src/layouts/RightForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div>
-    <!-- 公共属性-->
-    <!-- 视频 -->
-
+    <!-- 场景 -->
     <div class="scene color-bg2">
       <div class="color-tx1">属性</div>
     </div>
@@ -223,21 +221,7 @@ import { useSceneStore } from "stores/scene";
 import { useEditStore } from "stores/edit";
 const edit = useEditStore(); //编辑
 const scene = useSceneStore();
-
-// 场景
-const props = defineProps({
-  data: {
-    //列表数据
-    type: Object,
-    default: {
-      name: "",
-      path: "",
-      direction: null,
-      objects: [],
-    },
-  },
-});
-//视频
+//方向
 const directionList = ref([
   {
     name: "横屏",
